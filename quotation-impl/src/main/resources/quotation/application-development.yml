@@ -1,0 +1,18 @@
+spring:
+  jpa:
+    database: MYSQL
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate.dialect.storage_engine: innodb
+  datasource:
+    hikari:
+      maximum-pool-size: 3
+
+flyway:
+  enabled: true
+  locations: classpath:quotation/flyway/{vendor}
+  table: flyway_schema_history_quotation
+  encoding: UTF-8
+  baseline-on-migrate: true

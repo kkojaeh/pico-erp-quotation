@@ -1,0 +1,40 @@
+data:
+  quotation-drafts:
+    - id: quotation-1
+      name: 첫째 견적
+      project-id: sample-project1
+      customer-id: CUST1
+      expiry-policy: IN_YEAR
+      manager-id: ysh
+
+  quotation-items:
+    - id: quotation-1-item-1
+      quotation-id: quotation-1
+      itemId: item-1
+      description: 아이템 하나 설명
+      remark: 아이템 하나 비고
+      quantity: 1
+      discount-rate: 0
+
+  quotation-item-additions:
+    - id: quotation-1-item-addition-1
+      quotation-id: quotation-1
+      name: 이익율
+      description: 기본 이익율
+      additional-rate: 0.08
+
+  quotation-additions:
+    - id: quotation-1-addition-1
+      quotation-id: quotation-1
+      name: 기초비
+      description: 목형비
+      quantity: 2
+      unit-price: 100000
+
+  prepared-quotations:
+    - id: quotation-1
+
+  committed-quotations:
+    - id: quotation-1
+
+
