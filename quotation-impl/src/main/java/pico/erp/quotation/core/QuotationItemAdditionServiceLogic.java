@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import pico.erp.quotation.QuotationItemAdditionExceptions;
 import pico.erp.quotation.QuotationItemAdditionExceptions.NotFoundException;
 import pico.erp.quotation.QuotationItemAdditionRequests.CreateRequest;
 import pico.erp.quotation.QuotationItemAdditionRequests.DeleteRequest;
@@ -39,6 +40,9 @@ public class QuotationItemAdditionServiceLogic implements QuotationItemAdditionS
   public QuotationItemAdditionData create(CreateRequest request) {
     val itemAddition = new QuotationItemAddition();
     val response = itemAddition.apply(mapper.map(request));
+    if (quotationItemAdditionRepository.exists(request.getId())) {
+      throw new QuotationItemAdditionExceptions.AlreadyExistsException();
+    }
     val created = quotationItemAdditionRepository.create(itemAddition);
     eventPublisher.publishEvents(response.getEvents());
     return mapper.map(created);
@@ -46,8 +50,9 @@ public class QuotationItemAdditionServiceLogic implements QuotationItemAdditionS
 
   @Override
   public void delete(DeleteRequest request) {
+
     val itemAddition = quotationItemAdditionRepository.findBy(request.getId())
-      .orElseThrow(NotFoundException::new);
+      .orElseThrow(QuotationItemAdditionExceptions.NotFoundException::new);
     val response = itemAddition.apply(mapper.map(request));
     quotationItemAdditionRepository.deleteBy(itemAddition.getId());
     eventPublisher.publishEvents(response.getEvents());
@@ -62,7 +67,7 @@ public class QuotationItemAdditionServiceLogic implements QuotationItemAdditionS
   public QuotationItemAdditionData get(QuotationItemAdditionId id) {
     return quotationItemAdditionRepository.findBy(id)
       .map(mapper::map)
-      .orElseThrow(NotFoundException::new);
+      .orElseThrow(QuotationItemAdditionExceptions.NotFoundException::new);
   }
 
   @Override
@@ -75,7 +80,7 @@ public class QuotationItemAdditionServiceLogic implements QuotationItemAdditionS
   @Override
   public void update(UpdateRequest request) {
     val itemAddition = quotationItemAdditionRepository.findBy(request.getId())
-      .orElseThrow(NotFoundException::new);
+      .orElseThrow(QuotationItemAdditionExceptions.NotFoundException::new);
     val response = itemAddition.apply(mapper.map(request));
     quotationItemAdditionRepository.update(itemAddition);
     eventPublisher.publishEvents(response.getEvents());

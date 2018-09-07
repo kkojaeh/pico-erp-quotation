@@ -3,6 +3,7 @@ package pico.erp.quotation.domain;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ import pico.erp.quotation.domain.QuotationItemMessages.ApplyItemAdditionRequest;
 import pico.erp.quotation.domain.QuotationItemMessages.ApplyItemAdditionResponse;
 import pico.erp.quotation.domain.QuotationItemMessages.FixUnitPriceRequest;
 import pico.erp.quotation.domain.QuotationItemMessages.FixUnitPriceResponse;
+import pico.erp.shared.event.Event;
 
 @Getter
 @ToString
@@ -156,8 +158,12 @@ public class QuotationItem {
     val sumOfAdditionRate = request.getItemAdditions().stream()
       .map(itemAddition -> itemAddition.getAdditionalRate())
       .reduce(BigDecimal.ZERO, (accumulator, rate) -> accumulator.add(rate));
-    additionalRate = sumOfAdditionRate;
-    return new ApplyItemAdditionResponse(Collections.emptyList());
+    val events = new LinkedList<Event>();
+    if (!sumOfAdditionRate.equals(additionalRate)) {
+      additionalRate = sumOfAdditionRate;
+      events.add(new QuotationItemEvents.UpdatedEvent(this.id));
+    }
+    return new ApplyItemAdditionResponse(events);
   }
 
   public QuotationItemMessages.VerifyResponse apply(
@@ -213,7 +219,7 @@ public class QuotationItem {
 
   public BigDecimal getFinalizedAmount() {
     return Optional.ofNullable(quantity)
-      .map(quantity -> getFinalizedUnitPrice().multiply(quantity))
+      .map(quantity -> getFinalizedUnitPrice().multiply(quantity).setScale(2, BigDecimal.ROUND_HALF_UP))
       .orElse(null);
   }
 
@@ -223,12 +229,12 @@ public class QuotationItem {
    */
   public BigDecimal getFinalizedUnitPrice() {
     BigDecimal discounted = this.getDiscountedUnitPrice();
-    return discounted.add(discounted.multiply(additionalRate));
+    return discounted.add(discounted.multiply(additionalRate)).setScale(2, BigDecimal.ROUND_HALF_UP);
   }
 
   public BigDecimal getOriginalAmount() {
     return Optional.ofNullable(quantity)
-      .map(quantity -> getOriginalUnitPrice().multiply(quantity))
+      .map(quantity -> getOriginalUnitPrice().multiply(quantity).setScale(2, BigDecimal.ROUND_HALF_UP))
       .orElse(null);
   }
 

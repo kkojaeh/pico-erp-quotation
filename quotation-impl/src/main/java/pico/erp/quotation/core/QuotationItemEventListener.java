@@ -15,6 +15,7 @@ import pico.erp.bom.BomService;
 import pico.erp.bom.data.BomId;
 import pico.erp.quotation.QuotationEvents;
 import pico.erp.quotation.QuotationItemAdditionEvents;
+import pico.erp.quotation.QuotationItemAdditionExceptions;
 import pico.erp.quotation.QuotationItemAdditionExceptions.NotFoundException;
 import pico.erp.quotation.data.QuotationItemAdditionId;
 import pico.erp.quotation.domain.QuotationItemMessages;
@@ -67,19 +68,19 @@ public class QuotationItemEventListener {
   }
 
   private void onQuotationItemAdditionChanged(QuotationItemAdditionId id) {
-    val additionRate = quotationItemAdditionRepository
+    val itemAddition = quotationItemAdditionRepository
       .findBy(id)
-      .orElseThrow(NotFoundException::new);
-    val quotation = additionRate.getQuotation();
+      .orElseThrow(QuotationItemAdditionExceptions.NotFoundException::new);
+    val quotation = itemAddition.getQuotation();
     if (!quotation.canModify()) {
       return;
     }
-    val additionRates = quotationItemAdditionRepository.findAllBy(quotation.getId())
+    val itemAdditions = quotationItemAdditionRepository.findAllBy(quotation.getId())
       .collect(Collectors.toList());
     quotationItemRepository.findAllBy(quotation.getId())
       .forEach(item -> {
         val response = item
-          .apply(new ApplyItemAdditionRequest(additionRates));
+          .apply(new ApplyItemAdditionRequest(itemAdditions));
         quotationItemRepository.update(item);
         eventPublisher.publishEvents(response.getEvents());
       });

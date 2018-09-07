@@ -61,9 +61,11 @@ public abstract class QuotationJpaMapper {
   @Autowired
   private ProjectService projectService;
 
+  @Lazy
   @Autowired
   private QuotationAdditionRepository quotationAdditionRepository;
 
+  @Lazy
   @Autowired
   private QuotationItemRepository quotationItemRepository;
 

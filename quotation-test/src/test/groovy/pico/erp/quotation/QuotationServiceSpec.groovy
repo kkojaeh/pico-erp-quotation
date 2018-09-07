@@ -13,6 +13,7 @@ import pico.erp.project.data.ProjectId
 import pico.erp.quotation.data.QuotationData
 import pico.erp.quotation.data.QuotationExpiryPolicyKind
 import pico.erp.quotation.data.QuotationId
+import pico.erp.quotation.data.QuotationItemAdditionId
 import pico.erp.quotation.data.QuotationItemId
 import pico.erp.quotation.data.QuotationStatusKind
 import pico.erp.shared.IntegrationConfiguration
@@ -94,175 +95,13 @@ class QuotationServiceSpec extends Specification {
     thrown(QuotationExceptions.NotFoundException)
   }
 
+
+
   /*
 
-  def "견적에 BOM 품목을 추가"() {
-    when:
-    quotationService.addItem(
-      new QuotationService.AddItemRequest(
-        id: quotation.id,
-        item: new QuotationService.BomItemRequestData(
-          id: QuotationItemId.generate(),
-          bomId: BomId.from("bom-1"),
-          itemId: ItemId.from("item-1"),
-          quantity: 1,
-          unitPrice: new QuotationUnitPriceData(
-            original: 0,
-            directLabor: 0,
-            indirectLabor: 0,
-            directMaterial: 0,
-            indirectMaterial: 0,
-            indirectExpenses: 0,
-            discountRate: 0.15
-          ),
-          description: "BOM 품목 설명",
-          remark: "존재하지 않는 BOM"
-        )
-      )
-    )
-    def q = quotationService.get(quotation.id)
 
-    then:
-    q.items.size() == 1
-  }
 
-  def "견적에 입력 품목을 추가하여 금액 확인"() {
-    when:
-    quotationService.addItem(
-      new QuotationService.AddItemRequest(
-        id: quotation.id,
-        item: new QuotationService.InputItemRequestData(
-          id: QuotationItemId.generate(),
-          itemId: ItemId.from("item-1"),
-          unit: UnitKind.EA,
-          name: "직접 입력 품목",
-          quantity: 1,
-          unitPrice: new QuotationUnitPriceData(
-            original: 500,
-            directLabor: 100,
-            indirectLabor: 100,
-            directMaterial: 100,
-            indirectMaterial: 100,
-            indirectExpenses: 100,
-            discountRate: 0.15
-          ),
-          description: "직접 입력 품목 설명",
-          remark: "품목 없이 직접입력함"
-        )
-      )
-    )
 
-    quotationService.addItem(
-      new QuotationService.AddItemRequest(
-        id: quotation.id,
-        item: new QuotationService.InputItemRequestData(
-          id: QuotationItemId.generate(),
-          itemId: ItemId.from("item-2"),
-          name: "직접 입력 품목2",
-          unit: UnitKind.EA,
-          quantity: 2,
-          unitPrice: new QuotationUnitPriceData(
-            original: 400,
-            directLabor: 100,
-            indirectLabor: 100,
-            directMaterial: 100,
-            indirectMaterial: 50,
-            indirectExpenses: 50,
-            discountRate: 0.20
-          ),
-          description: "직접 입력 품목 설명2",
-          remark: "품목 없이 직접입력함2"
-        )
-      )
-    )
-    def q = quotationService.get(quotation.id)
-    def totalItemAmount = (500 * 1 * 0.85) + (400 * 2 * 0.8)
-    def totalItemOriginalAmount = (500 * 1) + (400 * 2)
-    def totalItemDiscountAmount = (500 * 1 * 0.15) + (400 * 2 * 0.2)
-
-    then:
-
-    q.totalItemAmount == totalItemAmount
-    q.totalItemDiscountedAmount == totalItemOriginalAmount - totalItemDiscountAmount
-    q.totalItemDiscountedRate == ((totalItemOriginalAmount - totalItemDiscountAmount) / totalItemOriginalAmount).setScale(4, BigDecimal.ROUND_HALF_UP)
-  }
-
-  def "견적에 추가 단가 적용 항목을 추가하여 금액 확인"() {
-    when:
-    quotationService.addItem(
-      new QuotationService.AddItemRequest(
-        id: quotation.id,
-        item: new QuotationService.InputItemRequestData(
-          id: QuotationItemId.generate(),
-          itemId: ItemId.from("item-1"),
-          unit: UnitKind.EA,
-          name: "직접 입력 품목",
-          quantity: 1,
-          unitPrice: new QuotationUnitPriceData(
-            original: 500,
-            directLabor: 100,
-            indirectLabor: 100,
-            directMaterial: 100,
-            indirectMaterial: 100,
-            indirectExpenses: 100,
-            discountRate: 0.15
-          ),
-          description: "직접 입력 품목 설명",
-          remark: "품목 없이 직접입력함"
-        )
-      )
-    )
-    quotationService.addItem(
-      new QuotationService.AddItemRequest(
-        id: quotation.id,
-        item: new QuotationService.InputItemRequestData(
-          id: QuotationItemId.generate(),
-          itemId: ItemId.from("item-2"),
-          name: "직접 입력 품목2",
-          unit: UnitKind.EA,
-          quantity: 2,
-          unitPrice: new QuotationUnitPriceData(
-            original: 400,
-            directLabor: 100,
-            indirectLabor: 100,
-            directMaterial: 100,
-            indirectMaterial: 50,
-            indirectExpenses: 50,
-            discountRate: 0.20
-          ),
-          description: "직접 입력 품목 설명2",
-          remark: "품목 없이 직접입력함2"
-        )
-      )
-    )
-    quotationService.addItemAdditionRate(
-      new QuotationService.AddItemAdditionRateRequest(
-        id: quotation.id,
-        itemAdditionRate: new QuotationService.ItemAdditionRateRequestData(
-          id: QuotationItemAdditionId.generate(),
-          name: "이윤 적용율(7%)",
-          rate: 0.07
-        )
-      )
-    )
-    quotationService.addItemAdditionRate(
-      new QuotationService.AddItemAdditionRateRequest(
-        id: quotation.id,
-        itemAdditionRate: new QuotationService.ItemAdditionRateRequestData(
-          id: QuotationItemAdditionId.generate(),
-          name: "일반 관리비(9%)",
-          rate: 0.09
-        )
-      )
-    )
-    def q = quotationService.get(quotation.id)
-    def totalItemAmount = (500 * 1 * 0.85) + (400 * 2 * 0.8)
-
-    then:
-
-    q.totalItemAmount == totalItemAmount * 1.16
-
-  }
 
   def "견적에 부가 금액 항목을 추가하여 금액 확인"() {
     when:

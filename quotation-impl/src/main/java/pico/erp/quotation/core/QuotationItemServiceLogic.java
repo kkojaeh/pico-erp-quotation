@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import pico.erp.quotation.QuotationItemExceptions.NotFoundException;
+import pico.erp.quotation.QuotationItemExceptions;
 import pico.erp.quotation.QuotationItemRequests.CreateRequest;
 import pico.erp.quotation.QuotationItemRequests.DeleteRequest;
 import pico.erp.quotation.QuotationItemRequests.FixUnitPriceRequest;
@@ -57,7 +57,7 @@ public class QuotationItemServiceLogic implements QuotationItemService {
   @Override
   public void delete(DeleteRequest request) {
     val item = quotationItemRepository.findBy(request.getId())
-      .orElseThrow(NotFoundException::new);
+      .orElseThrow(QuotationItemExceptions.NotFoundException::new);
     val response = item.apply(mapper.map(request));
     quotationItemRepository.deleteBy(item.getId());
     eventPublisher.publishEvents(response.getEvents());
@@ -71,7 +71,7 @@ public class QuotationItemServiceLogic implements QuotationItemService {
   @Override
   public void fixUnitPrice(FixUnitPriceRequest request) {
     val item = quotationItemRepository.findBy(request.getId())
-      .orElseThrow(NotFoundException::new);
+      .orElseThrow(QuotationItemExceptions.NotFoundException::new);
     val response = item.apply(mapper.map(request));
     quotationItemRepository.update(item);
     eventPublisher.publishEvents(response.getEvents());
@@ -81,7 +81,8 @@ public class QuotationItemServiceLogic implements QuotationItemService {
   public QuotationItemData get(QuotationItemId id) {
     return quotationItemRepository.findBy(id)
       .map(mapper::map)
-      .orElseThrow(NotFoundException::new);
+      .orElseThrow(QuotationItemExceptions.NotFoundException::new);
+
   }
 
   @Override
@@ -94,7 +95,7 @@ public class QuotationItemServiceLogic implements QuotationItemService {
   @Override
   public void update(UpdateRequest request) {
     val item = quotationItemRepository.findBy(request.getId())
-      .orElseThrow(NotFoundException::new);
+      .orElseThrow(QuotationItemExceptions.NotFoundException::new);
     val response = item.apply(mapper.map(request));
     quotationItemRepository.update(item);
     eventPublisher.publishEvents(response.getEvents());
