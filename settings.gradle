@@ -1,5 +1,5 @@
 rootProject.name = 'pico-erp-quotation'
 include 'quotation-api'
 include 'quotation-impl'
-include 'quotation-test-cfg'
+include 'quotation-test'
 
