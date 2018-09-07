@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional
 import pico.erp.company.data.CompanyId
 import pico.erp.item.data.ItemId
 import pico.erp.project.data.ProjectId
+import pico.erp.quotation.data.QuotationAdditionId
 import pico.erp.quotation.data.QuotationExpiryPolicyKind
 import pico.erp.quotation.data.QuotationId
-import pico.erp.quotation.data.QuotationItemAdditionId
 import pico.erp.quotation.data.QuotationItemId
 import pico.erp.shared.IntegrationConfiguration
 import pico.erp.user.data.UserId
@@ -24,7 +24,7 @@ import spock.lang.Specification
 @ActiveProfiles("test")
 @Configuration
 @ComponentScan("pico.erp.config")
-class QuotationItemAdditionServiceSpec extends Specification {
+class QuotationAdditionServiceSpec extends Specification {
 
   @Autowired
   QuotationService quotationService
@@ -33,7 +33,7 @@ class QuotationItemAdditionServiceSpec extends Specification {
   QuotationItemService quotationItemService
 
   @Autowired
-  QuotationItemAdditionService quotationItemAdditionService
+  QuotationAdditionService quotationAdditionService
 
   def quotationId = QuotationId.from("test")
 
@@ -49,7 +49,7 @@ class QuotationItemAdditionServiceSpec extends Specification {
   }
 
 
-  def "견적에 추가 단가 적용 항목을 추가하여 금액 확인"() {
+  def "견적에 추가 금액을 추가하여 금액 확인"() {
     when:
     quotationItemService.create(
       new QuotationItemRequests.CreateRequest(
@@ -62,28 +62,31 @@ class QuotationItemAdditionServiceSpec extends Specification {
         remark: "존재하지 않는 BOM"
       )
     )
-    quotationItemAdditionService.create(
-      new QuotationItemAdditionRequests.CreateRequest(
-        id: QuotationItemAdditionId.from("quotation-item-addition-1"),
+    quotationAdditionService.create(
+      new QuotationAdditionRequests.CreateRequest(
+        id: QuotationAdditionId.from("quotation-addition-1"),
         quotationId: quotationId,
-        name: "이윤 적용율(7%)",
-        additionalRate: 0.07
+        name: "기초비",
+        description: "아웃박스 수지판비",
+        quantity: 2,
+        unitPrice: 120000
       )
     )
-    quotationItemAdditionService.create(
-      new QuotationItemAdditionRequests.CreateRequest(
-        id: QuotationItemAdditionId.from("quotation-item-addition-2"),
+    quotationAdditionService.create(
+      new QuotationAdditionRequests.CreateRequest(
+        id: QuotationAdditionId.from("quotation-addition-2"),
         quotationId: quotationId,
-        name: "일반 관리비(9%)",
-        additionalRate: 0.09
+        name: "기초비",
+        description: "RRP 목형",
+        quantity: 1,
+        unitPrice: 150000
       )
     )
     def quotation = quotationService.get(quotationId)
-    def item = quotationItemService.get(QuotationItemId.from("quotation-item-1"))
 
     then:
 
-    quotation.totalItemAmount == ((item.originalAmount - (item.originalAmount * 0.15)) * 1.16).setScale(2, BigDecimal.ROUND_HALF_UP)
+    quotation.totalAdditionAmount == (120000 * 2) + (150000 * 1)
 
   }
 
