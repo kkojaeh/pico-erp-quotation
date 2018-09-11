@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import lombok.Cleanup;
 import lombok.SneakyThrows;
+import lombok.val;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -19,8 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import pico.erp.quotation.core.QuotationPrinter;
-import pico.erp.quotation.data.QuotationPrintData;
+import pico.erp.quotation.QuotationAggregator;
+import pico.erp.quotation.QuotationPrinter;
+import pico.erp.quotation.QuotationRepository;
 import pico.erp.quotation.data.QuotationPrintSheetOptions;
 import pico.erp.shared.ExportHelper;
 import pico.erp.shared.data.ContentInputStream;
@@ -34,6 +36,12 @@ public class QuotationPrinterJxls implements QuotationPrinter {
   @Autowired
   private ExportHelper exportHelper;
 
+  @Autowired
+  private QuotationPrintMapper quotationPrintMapper;
+
+  @Autowired
+  private QuotationRepository quotationRepository;
+
   private static OutputStream NOOP_OUTPUT_STREAM = new OutputStream() {
     @Override
     public void write(int b) throws IOException {
@@ -42,8 +50,11 @@ public class QuotationPrinterJxls implements QuotationPrinter {
 
   @SneakyThrows
   @Override
-  public ContentInputStream printSheet(QuotationPrintData data,
+  public ContentInputStream printSheet(QuotationAggregator quotation,
     QuotationPrintSheetOptions options) {
+
+    val data = quotationPrintMapper.map(quotation);
+
     @Cleanup
     InputStream jxlsTemplate = sheetTemplate.getInputStream();
 

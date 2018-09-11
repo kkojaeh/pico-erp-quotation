@@ -1,6 +1,5 @@
 package pico.erp.quotation
 
-
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.ComponentScan
@@ -13,8 +12,10 @@ import pico.erp.item.data.ItemId
 import pico.erp.project.data.ProjectId
 import pico.erp.quotation.data.QuotationExpiryPolicyKind
 import pico.erp.quotation.data.QuotationId
-import pico.erp.quotation.data.QuotationItemId
 import pico.erp.quotation.data.QuotationPrintSheetOptions
+import pico.erp.quotation.item.QuotationItemRequests
+import pico.erp.quotation.item.QuotationItemService
+import pico.erp.quotation.item.data.QuotationItemId
 import pico.erp.shared.IntegrationConfiguration
 import pico.erp.user.data.UserId
 import spock.lang.Specification

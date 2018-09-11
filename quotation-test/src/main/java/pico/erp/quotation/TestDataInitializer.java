@@ -9,6 +9,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
+import pico.erp.quotation.addition.QuotationAdditionRequests;
+import pico.erp.quotation.addition.QuotationAdditionService;
+import pico.erp.quotation.item.QuotationItemRequests;
+import pico.erp.quotation.item.QuotationItemService;
+import pico.erp.quotation.item.addition.QuotationItemAdditionRequests;
+import pico.erp.quotation.item.addition.QuotationItemAdditionService;
 import pico.erp.shared.ApplicationInitializer;
 
 @Transactional

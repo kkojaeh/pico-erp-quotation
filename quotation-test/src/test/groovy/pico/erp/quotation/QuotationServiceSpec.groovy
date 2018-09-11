@@ -12,6 +12,7 @@ import pico.erp.project.data.ProjectId
 import pico.erp.quotation.data.QuotationExpiryPolicyKind
 import pico.erp.quotation.data.QuotationId
 import pico.erp.quotation.data.QuotationStatusKind
+import pico.erp.quotation.item.QuotationItemService
 import pico.erp.shared.IntegrationConfiguration
 import pico.erp.user.data.UserId
 import spock.lang.Specification
