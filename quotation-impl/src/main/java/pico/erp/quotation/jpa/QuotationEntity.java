@@ -29,7 +29,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import pico.erp.attachment.data.AttachmentId;
-import pico.erp.comment.data.CommentSubjectId;
+import pico.erp.comment.subject.data.CommentSubjectId;
 import pico.erp.company.data.CompanyId;
 import pico.erp.project.data.ProjectId;
 import pico.erp.quotation.data.QuotationCode;

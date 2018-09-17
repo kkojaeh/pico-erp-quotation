@@ -6,7 +6,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import pico.erp.attachment.data.AttachmentId;
-import pico.erp.comment.data.CommentSubjectId;
+import pico.erp.comment.subject.data.CommentSubjectId;
 import pico.erp.company.data.CompanyId;
 import pico.erp.project.data.ProjectId;
 import pico.erp.user.data.UserId;
