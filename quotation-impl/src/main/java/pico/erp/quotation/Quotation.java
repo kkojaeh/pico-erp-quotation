@@ -61,15 +61,15 @@ public class Quotation {
 
   int revision;
 
-  ProjectData projectData;
+  ProjectData project;
 
-  CompanyData customerData;
+  CompanyData customer;
 
   String name;
 
   QuotationExpiryPolicyKind expiryPolicy;
 
-  UserData managerData;
+  UserData manager;
 
   Auditor committer;
 
@@ -160,9 +160,9 @@ public class Quotation {
     name = request.getName();
     status = QuotationStatusKind.DRAFT;
     expiryPolicy = request.getExpiryPolicy();
-    projectData = request.getProjectData();
-    customerData = request.getCustomerData();
-    managerData = request.getManagerData();
+    project = request.getProject();
+    customer = request.getCustomer();
+    manager = request.getManager();
     commentSubjectId = CommentSubjectId.from(id.getValue());
     protectedDescription = request.getProtectedDescription();
     publicDescription = request.getPublicDescription();
@@ -204,9 +204,9 @@ public class Quotation {
     name = request.getName();
     status = QuotationStatusKind.DRAFT;
     expiryPolicy = request.getExpiryPolicy();
-    projectData = request.getProjectData();
-    customerData = request.getCustomerData();
-    managerData = request.getManagerData();
+    project = request.getProject();
+    customer = request.getCustomer();
+    manager = request.getManager();
     protectedDescription = request.getProtectedDescription();
     publicDescription = request.getPublicDescription();
     attachmentId = request.getAttachmentId();

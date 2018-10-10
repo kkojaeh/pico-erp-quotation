@@ -37,7 +37,7 @@ public class QuotationRepositoryJpa implements QuotationRepository {
   private QuotationEntityRepository repository;
 
   @Autowired
-  private QuotationJpaMapper mapper;
+  private QuotationMapper mapper;
 
 
   @Override
@@ -51,9 +51,9 @@ public class QuotationRepositoryJpa implements QuotationRepository {
 
   @Override
   public Quotation create(Quotation quotation) {
-    val entity = mapper.map(quotation);
+    val entity = mapper.jpa(quotation);
     val created = repository.save(entity);
-    return mapper.map(created);
+    return mapper.jpa(created);
   }
 
   @Override
@@ -69,26 +69,26 @@ public class QuotationRepositoryJpa implements QuotationRepository {
   @Override
   public Optional<QuotationAggregator> findAggregatorBy(QuotationId id) {
     return Optional.ofNullable(repository.findOne(id))
-      .map(mapper::mapAggregator);
+      .map(mapper::jpaAggregator);
   }
 
   @Override
   public Stream<Quotation> findAllExpireCandidateBeforeThan(OffsetDateTime fixedDate) {
     return repository.findAllExpireCandidateBeforeThan(fixedDate,
       EnumSet.of(QuotationStatusKind.COMMITTED, QuotationStatusKind.IN_PROCEED))
-      .map(mapper::map);
+      .map(mapper::jpa);
   }
 
   @Override
   public Optional<Quotation> findBy(QuotationId id) {
     return Optional.ofNullable(repository.findOne(id))
-      .map(mapper::map);
+      .map(mapper::jpa);
   }
 
   @Override
   public void update(Quotation quotation) {
     val entity = repository.findOne(quotation.getId());
-    mapper.pass(mapper.map(quotation), entity);
+    mapper.pass(mapper.jpa(quotation), entity);
     repository.save(entity);
   }
 }

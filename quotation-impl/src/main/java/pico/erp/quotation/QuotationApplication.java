@@ -78,23 +78,23 @@ public class QuotationApplication implements ApplicationStarter {
 
   @Bean
   @Public
+  public AuditConfiguration auditConfiguration() {
+    return AuditConfiguration.builder()
+      .packageToScan("pico.erp.quotation")
+      .entity(QuotationRoles.class)
+      .build();
+  }
+
+  @Bean
+  @Public
   public Role quotationAccessorRole() {
-    return ROLE.QUOTATION_ACCESSOR;
+    return QuotationRoles.QUOTATION_ACCESSOR;
   }
 
   @Bean
   @Public
   public Role quotationManagerRole() {
-    return ROLE.QUOTATION_MANAGER;
-  }
-
-  @Bean
-  @Public
-  public AuditConfiguration auditConfiguration() {
-    return AuditConfiguration.builder()
-      .packageToScan("pico.erp.quotation")
-      .entity(ROLE.class)
-      .build();
+    return QuotationRoles.QUOTATION_MANAGER;
   }
 
   @Override

@@ -26,13 +26,13 @@ public class QuotationPrintData {
 
   CompanyData supplierData;
 
-  CompanyData customerData;
+  CompanyData customer;
 
-  ProjectData projectData;
+  ProjectData project;
 
   QuotationExpiryPolicyKind expiryPolicy;
 
-  UserData managerData;
+  UserData manager;
 
   String publicDescription;
 

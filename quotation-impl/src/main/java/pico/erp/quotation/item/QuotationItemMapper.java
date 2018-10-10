@@ -1,8 +1,10 @@
 package pico.erp.quotation.item;
 
 import java.util.Optional;
+import lombok.val;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -12,6 +14,7 @@ import pico.erp.item.ItemData;
 import pico.erp.item.ItemId;
 import pico.erp.item.ItemService;
 import pico.erp.quotation.Quotation;
+import pico.erp.quotation.QuotationEntity;
 import pico.erp.quotation.QuotationId;
 import pico.erp.quotation.QuotationMapper;
 import pico.erp.quotation.item.QuotationItemRequests.CreateRequest;
@@ -38,19 +41,33 @@ public abstract class QuotationItemMapper {
       .orElse(null);
   }
 
-  @Mappings({
-    @Mapping(target = "quotation", source = "quotationId"),
-    @Mapping(target = "itemData", source = "itemId"),
-    @Mapping(target = "bomData", source = "itemId")
-  })
-  public abstract QuotationItemMessages.CreateRequest map(
-    CreateRequest request);
+  protected QuotationEntity jpa(Quotation quotation) {
+    return quotationMapper.jpa(quotation);
+  }
 
-  @Mappings({
-    @Mapping(target = "bomData", source = "itemId")
-  })
-  public abstract QuotationItemMessages.UpdateRequest map(
-    QuotationItemRequests.UpdateRequest request);
+  public QuotationItem jpa(QuotationItemEntity entity) {
+    val itemId = entity.getItemId();
+    val bom = bomService.exists(itemId) ? bomService.get(itemId) : null;
+    return QuotationItem.builder()
+      .quotation(quotationMapper.jpa(entity.getQuotation()))
+      .bom(bom)
+      .item(map(entity.getItemId()))
+      .description(entity.getDescription())
+      .remark(entity.getRemark())
+      .quantity(entity.getQuantity())
+      .originalUnitPrice(entity.getOriginalUnitPrice())
+      .directLaborUnitPrice(entity.getDirectLaborUnitPrice())
+      .indirectLaborUnitPrice(entity.getIndirectLaborUnitPrice())
+      .indirectMaterialUnitPrice(entity.getIndirectMaterialUnitPrice())
+      .directMaterialUnitPrice(entity.getDirectMaterialUnitPrice())
+      .indirectExpensesUnitPrice(entity.getIndirectExpensesUnitPrice())
+      .additionalRate(entity.getAdditionalRate())
+      .discountRate(entity.getDiscountRate())
+      .id(entity.getId())
+      .bom(bom(entity.getItemId()))
+      .unitPriceManuallyFixed(entity.isUnitPriceManuallyFixed())
+      .build();
+  }
 
   public abstract QuotationItemMessages.DeleteRequest map(
     QuotationItemRequests.DeleteRequest request);
@@ -69,9 +86,33 @@ public abstract class QuotationItemMapper {
   }
 
   @Mappings({
-    @Mapping(target = "itemId", source = "itemData.id")
+    //@Mapping(target = "bomId", source = "bom.id"),
+    @Mapping(target = "itemId", source = "item.id"),
+    @Mapping(target = "createdBy", ignore = true),
+    @Mapping(target = "createdDate", ignore = true)
+  })
+  public abstract QuotationItemEntity jpa(QuotationItem item);
+
+  @Mappings({
+    @Mapping(target = "itemId", source = "item.id")
   })
   public abstract QuotationItemData map(QuotationItem item);
+
+  @Mappings({
+    @Mapping(target = "bom", source = "itemId")
+  })
+  public abstract QuotationItemMessages.UpdateRequest map(
+    QuotationItemRequests.UpdateRequest request);
+
+  @Mappings({
+    @Mapping(target = "quotation", source = "quotationId"),
+    @Mapping(target = "item", source = "itemId"),
+    @Mapping(target = "bom", source = "itemId")
+  })
+  public abstract QuotationItemMessages.CreateRequest map(
+    CreateRequest request);
+
+  public abstract void pass(QuotationItemEntity from, @MappingTarget QuotationItemEntity to);
 
 
 }

@@ -45,11 +45,11 @@ public interface QuotationMessages {
 
     @Valid
     @NotNull
-    ProjectData projectData;
+    ProjectData project;
 
     @Valid
     @NotNull
-    CompanyData customerData;
+    CompanyData customer;
 
     @Size(max = TypeDefinitions.NAME_LENGTH)
     @NotNull
@@ -60,7 +60,7 @@ public interface QuotationMessages {
 
     @Valid
     @NotNull
-    UserData managerData;
+    UserData manager;
 
     @Size(max = TypeDefinitions.DESCRIPTION_LENGTH)
     String protectedDescription;
@@ -101,11 +101,11 @@ public interface QuotationMessages {
 
     @Valid
     @NotNull
-    ProjectData projectData;
+    ProjectData project;
 
     @Valid
     @NotNull
-    CompanyData customerData;
+    CompanyData customer;
 
     @Size(max = TypeDefinitions.NAME_LENGTH)
     String name;
@@ -115,7 +115,7 @@ public interface QuotationMessages {
 
     @Valid
     @NotNull
-    UserData managerData;
+    UserData manager;
 
     @Size(max = TypeDefinitions.DESCRIPTION_LENGTH)
     String protectedDescription;

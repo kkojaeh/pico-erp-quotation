@@ -1,8 +1,10 @@
 package pico.erp.quotation;
 
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -14,7 +16,10 @@ import pico.erp.project.ProjectData;
 import pico.erp.project.ProjectId;
 import pico.erp.project.ProjectService;
 import pico.erp.quotation.QuotationExceptions.NotFoundException;
+import pico.erp.quotation.addition.QuotationAdditionRepository;
 import pico.erp.quotation.code.QuotationCodeGenerator;
+import pico.erp.quotation.item.QuotationItemRepository;
+import pico.erp.quotation.item.addition.QuotationItemAdditionRepository;
 import pico.erp.shared.data.Auditor;
 import pico.erp.user.UserData;
 import pico.erp.user.UserId;
@@ -23,12 +28,12 @@ import pico.erp.user.UserService;
 @Mapper
 public abstract class QuotationMapper {
 
+  @Lazy
   @Autowired
   protected QuotationCodeGenerator quotationCodeGenerator;
 
   @Autowired
   protected AuditorAware<Auditor> auditorAware;
-
 
   @Lazy
   @Autowired
@@ -45,6 +50,18 @@ public abstract class QuotationMapper {
   @Lazy
   @Autowired
   private QuotationRepository quotationRepository;
+
+  @Lazy
+  @Autowired
+  private QuotationAdditionRepository quotationAdditionRepository;
+
+  @Lazy
+  @Autowired
+  private QuotationItemRepository quotationItemRepository;
+
+  @Lazy
+  @Autowired
+  private QuotationItemAdditionRepository quotationItemAdditionRepository;
 
 
   @Mappings({
@@ -84,14 +101,34 @@ public abstract class QuotationMapper {
       .orElseThrow(NotFoundException::new);
   }
 
-
-  @Mappings({
-    @Mapping(target = "projectData", source = "projectId"),
-    @Mapping(target = "customerData", source = "customerId"),
-    @Mapping(target = "managerData", source = "managerId"),
-    @Mapping(target = "quotationCodeGenerator", expression = "java(quotationCodeGenerator)")
-  })
-  public abstract QuotationMessages.DraftRequest map(QuotationRequests.DraftRequest request);
+  public Quotation jpa(QuotationEntity entity) {
+    return Quotation.builder()
+      .code(entity.getCode())
+      .id(entity.getId())
+      .previousId(entity.getPreviousId())
+      .commentSubjectId(entity.getCommentSubjectId())
+      .revision(entity.getRevision())
+      .project(map(entity.getProjectId()))
+      .customer(map(entity.getCustomerId()))
+      .name(entity.getName())
+      .expiryPolicy(entity.getExpiryPolicy())
+      .manager(map(entity.getManagerId()))
+      .committedDate(entity.getCommittedDate())
+      .status(entity.getStatus())
+      .publicDescription(entity.getPublicDescription())
+      .protectedDescription(entity.getProtectedDescription())
+      .attachmentId(entity.getAttachmentId())
+      .expirationDate(entity.getExpirationDate())
+      .totalAdditionAmount(entity.getTotalAdditionAmount())
+      .totalAmount(entity.getTotalAmount())
+      .totalItemAmount(entity.getTotalItemAmount())
+      .totalItemDiscountedAmount(entity.getTotalItemDiscountedAmount())
+      .totalItemDiscountedRate(entity.getTotalItemDiscountedRate())
+      .totalItemOriginalAmount(entity.getTotalItemOriginalAmount())
+      .committable(entity.isCommittable())
+      .preparable(entity.isPreparable())
+      .build();
+  }
 
   public abstract QuotationMessages.DeleteRequest map(QuotationRequests.DeleteRequest request);
 
@@ -104,24 +141,85 @@ public abstract class QuotationMapper {
   public abstract QuotationMessages.PrintSheetRequest map(
     QuotationRequests.PrintSheetRequest request);
 
+  @Mappings({
+    @Mapping(target = "projectId", source = "project.id"),
+    @Mapping(target = "projectName", source = "project.name"),
+    @Mapping(target = "customerId", source = "customer.id"),
+    @Mapping(target = "customerName", source = "customer.name"),
+    @Mapping(target = "managerId", source = "manager.id"),
+    @Mapping(target = "managerName", source = "manager.name"),
+    @Mapping(target = "createdBy", ignore = true),
+    @Mapping(target = "createdDate", ignore = true),
+    @Mapping(target = "lastModifiedBy", ignore = true),
+    @Mapping(target = "lastModifiedDate", ignore = true)
+  })
+  public abstract QuotationEntity jpa(Quotation quotation);
+
+  public QuotationAggregator jpaAggregator(QuotationEntity entity) {
+    return QuotationAggregator.aggregatorBuilder()
+      .code(entity.getCode())
+      .id(entity.getId())
+      .previousId(entity.getPreviousId())
+      .commentSubjectId(entity.getCommentSubjectId())
+      .revision(entity.getRevision())
+      .project(map(entity.getProjectId()))
+      .customer(map(entity.getCustomerId()))
+      .name(entity.getName())
+      .expiryPolicy(entity.getExpiryPolicy())
+      .manager(map(entity.getManagerId()))
+      .committedDate(entity.getCommittedDate())
+      .status(entity.getStatus())
+      .publicDescription(entity.getPublicDescription())
+      .protectedDescription(entity.getProtectedDescription())
+      .attachmentId(entity.getAttachmentId())
+      .expirationDate(entity.getExpirationDate())
+      .totalAdditionAmount(entity.getTotalAdditionAmount())
+      .totalAmount(entity.getTotalAmount())
+      .totalItemAmount(entity.getTotalItemAmount())
+      .totalItemDiscountedAmount(entity.getTotalItemDiscountedAmount())
+      .totalItemDiscountedRate(entity.getTotalItemDiscountedRate())
+      .totalItemOriginalAmount(entity.getTotalItemOriginalAmount())
+      .items(
+        quotationItemRepository.findAllBy(entity.getId()).collect(Collectors.toList())
+      )
+      .itemAdditions(
+        quotationItemAdditionRepository.findAllBy(entity.getId()).collect(Collectors.toList())
+      )
+      .additions(
+        quotationAdditionRepository.findAllBy(entity.getId()).collect(Collectors.toList())
+      )
+      .committable(entity.isCommittable())
+      .preparable(entity.isPreparable())
+      .build();
+  }
+
+
+  public abstract QuotationMessages.ExpireRequest map(QuotationRequests.ExpireRequest request);
 
   @Mappings({
-    @Mapping(target = "projectData", source = "projectId"),
-    @Mapping(target = "customerData", source = "customerId"),
-    @Mapping(target = "managerData", source = "managerId")
+    @Mapping(target = "project", source = "projectId"),
+    @Mapping(target = "customer", source = "customerId"),
+    @Mapping(target = "manager", source = "managerId"),
+    @Mapping(target = "quotationCodeGenerator", expression = "java(quotationCodeGenerator)")
+  })
+  public abstract QuotationMessages.DraftRequest map(QuotationRequests.DraftRequest request);
+
+  @Mappings({
+    @Mapping(target = "project", source = "projectId"),
+    @Mapping(target = "customer", source = "customerId"),
+    @Mapping(target = "manager", source = "managerId")
   })
   public abstract QuotationMessages.UpdateRequest map(QuotationRequests.UpdateRequest request);
 
   @Mappings({
-    @Mapping(target = "projectId", source = "projectData.id"),
-    @Mapping(target = "customerId", source = "customerData.id"),
-    @Mapping(target = "managerId", source = "managerData.id"),
+    @Mapping(target = "projectId", source = "project.id"),
+    @Mapping(target = "customerId", source = "customer.id"),
+    @Mapping(target = "managerId", source = "manager.id"),
     @Mapping(target = "modifiable", expression = "java(quotation.canModify())")
   })
   public abstract QuotationData map(Quotation quotation);
 
-
-  public abstract QuotationMessages.ExpireRequest map(QuotationRequests.ExpireRequest request);
+  public abstract void pass(QuotationEntity from, @MappingTarget QuotationEntity to);
 
 
 }

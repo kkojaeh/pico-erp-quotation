@@ -105,9 +105,9 @@ public abstract class QuotationPrintMapper {
   protected abstract QuotationExportAdditionData map(QuotationAddition addition);
 
   @Mappings({
-    @Mapping(target = "boms", source = "bomData"),
-    @Mapping(target = "name", source = "itemData.name"),
-    @Mapping(target = "unit", source = "itemData.unit")
+    @Mapping(target = "boms", source = "bom"),
+    @Mapping(target = "name", source = "item.name"),
+    @Mapping(target = "unit", source = "item.unit")
   })
   public abstract QuotationPrintItemData map(QuotationItem item);
 

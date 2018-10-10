@@ -35,9 +35,9 @@ public interface QuotationItemMessages {
     Quotation quotation;
 
     @NotNull
-    ItemData itemData;
+    ItemData item;
 
-    BomData bomData;
+    BomData bom;
 
     @NotNull
     BigDecimal discountRate;
@@ -66,7 +66,7 @@ public interface QuotationItemMessages {
   @Builder
   class UpdateRequest {
 
-    BomData bomData;
+    BomData bom;
 
     @NotNull
     BigDecimal discountRate;

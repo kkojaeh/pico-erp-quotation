@@ -42,9 +42,9 @@ public class QuotationItem {
 
   BigDecimal quantity;
 
-  ItemData itemData;
+  ItemData item;
 
-  BomData bomData;
+  BomData bom;
 
   /**
    * 계산 전 단가
@@ -108,8 +108,8 @@ public class QuotationItem {
     this.quotation = request.getQuotation();
     this.description = request.getDescription();
     this.quantity = request.getQuantity();
-    this.itemData = request.getItemData();
-    this.bomData = request.getBomData();
+    this.item = request.getItem();
+    this.bom = request.getBom();
     this.remark = request.getRemark();
     this.discountRate = request.getDiscountRate();
     applyUnitPrices();
@@ -124,7 +124,7 @@ public class QuotationItem {
     }
     this.description = request.getDescription();
     this.quantity = request.getQuantity();
-    this.bomData = request.getBomData();
+    this.bom = request.getBom();
     this.remark = request.getRemark();
     this.discountRate = request.getDiscountRate();
     applyUnitPrices();
@@ -192,8 +192,8 @@ public class QuotationItem {
   }
 
   private void applyUnitPrices() {
-    if (bomData != null && !unitPriceManuallyFixed) {
-      BomUnitCostData unitCost = bomData.getEstimatedAccumulatedUnitCost();
+    if (bom != null && !unitPriceManuallyFixed) {
+      BomUnitCostData unitCost = bom.getEstimatedAccumulatedUnitCost();
       originalUnitPrice = unitCost.getTotal();
       directMaterialUnitPrice = unitCost.getDirectMaterial();
       indirectMaterialUnitPrice = unitCost.getIndirectMaterial();
@@ -238,7 +238,7 @@ public class QuotationItem {
   }
 
   public boolean isCommittable() {
-    if (bomData != null && bomData.isStable()) {
+    if (bom != null && bom.isStable()) {
       return true;
     }
     return false;

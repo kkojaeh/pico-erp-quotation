@@ -37,8 +37,8 @@ public class QuotationAggregator extends Quotation {
   @Builder(builderMethodName = "aggregatorBuilder")
   public QuotationAggregator(QuotationId id, QuotationCode code,
     QuotationId previousId, CommentSubjectId commentSubjectId, int revision,
-    ProjectData projectData, CompanyData customerData, String name,
-    QuotationExpiryPolicyKind expiryPolicy, UserData managerData,
+    ProjectData project, CompanyData customer, String name,
+    QuotationExpiryPolicyKind expiryPolicy, UserData manager,
     Auditor committer, OffsetDateTime committedDate, Auditor canceler,
     OffsetDateTime canceledDate, QuotationStatusKind status, String protectedDescription,
     String publicDescription, AttachmentId attachmentId, OffsetDateTime expirationDate,
@@ -49,8 +49,8 @@ public class QuotationAggregator extends Quotation {
     List<QuotationItem> items,
     List<QuotationItemAddition> itemAdditions,
     List<QuotationAddition> additions) {
-    super(id, code, previousId, commentSubjectId, revision, projectData, customerData, name,
-      expiryPolicy, managerData, committer, committedDate, canceler, canceledDate, status,
+    super(id, code, previousId, commentSubjectId, revision, project, customer, name,
+      expiryPolicy, manager, committer, committedDate, canceler, canceledDate, status,
       protectedDescription, publicDescription, attachmentId, expirationDate, committable,
       preparable, totalAdditionAmount, totalAmount, totalItemAmount, totalItemDiscountedAmount,
       totalItemDiscountedRate, totalItemOriginalAmount);

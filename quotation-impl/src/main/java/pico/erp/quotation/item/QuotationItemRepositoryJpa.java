@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pico.erp.item.ItemId;
 import pico.erp.quotation.QuotationId;
-import pico.erp.quotation.QuotationJpaMapper;
 
 @Repository
 interface QuotationItemEntityRepository extends
@@ -36,13 +35,13 @@ public class QuotationItemRepositoryJpa implements QuotationItemRepository {
   private QuotationItemEntityRepository repository;
 
   @Autowired
-  private QuotationJpaMapper mapper;
+  private QuotationItemMapper mapper;
 
   @Override
   public QuotationItem create(QuotationItem quotationItem) {
-    val entity = mapper.map(quotationItem);
+    val entity = mapper.jpa(quotationItem);
     val created = repository.save(entity);
-    return mapper.map(created);
+    return mapper.jpa(created);
   }
 
   @Override
@@ -58,25 +57,25 @@ public class QuotationItemRepositoryJpa implements QuotationItemRepository {
   @Override
   public Stream<QuotationItem> findAllBy(QuotationId quotationId) {
     return repository.findAllBy(quotationId)
-      .map(mapper::map);
+      .map(mapper::jpa);
   }
 
   @Override
   public Stream<QuotationItem> findAllBy(ItemId itemId) {
     return repository.findAllBy(itemId)
-      .map(mapper::map);
+      .map(mapper::jpa);
   }
 
   @Override
   public Optional<QuotationItem> findBy(QuotationItemId id) {
     return Optional.ofNullable(repository.findOne(id))
-      .map(mapper::map);
+      .map(mapper::jpa);
   }
 
   @Override
   public void update(QuotationItem quotationItem) {
     val entity = repository.findOne(quotationItem.getId());
-    mapper.pass(mapper.map(quotationItem), entity);
+    mapper.pass(mapper.jpa(quotationItem), entity);
     repository.save(entity);
   }
 }

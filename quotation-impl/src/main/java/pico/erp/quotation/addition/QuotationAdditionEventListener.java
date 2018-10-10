@@ -71,7 +71,7 @@ public class QuotationAdditionEventListener {
 
     quotationItemRepository.findAllBy(quotation.getId())
       .forEach(item -> {
-        val hierarchyBom = bomService.getHierarchy(item.getBomData().getId());
+        val hierarchyBom = bomService.getHierarchy(item.getBom().getId());
         hierarchyBom.visit((bom, level) -> {
           Optional.ofNullable(bom.getProcessId())
             .ifPresent(processId -> {

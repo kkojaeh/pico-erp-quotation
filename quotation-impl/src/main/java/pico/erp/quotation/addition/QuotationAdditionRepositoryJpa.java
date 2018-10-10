@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import pico.erp.quotation.QuotationId;
-import pico.erp.quotation.QuotationJpaMapper;
 
 @Repository
 interface QuotationAdditionEntityRepository extends
@@ -33,13 +32,13 @@ public class QuotationAdditionRepositoryJpa implements QuotationAdditionReposito
   private QuotationAdditionEntityRepository repository;
 
   @Autowired
-  private QuotationJpaMapper mapper;
+  private QuotationAdditionMapper mapper;
 
   @Override
   public QuotationAddition create(QuotationAddition quotationAddition) {
-    val entity = mapper.map(quotationAddition);
+    val entity = mapper.jpa(quotationAddition);
     val created = repository.save(entity);
-    return mapper.map(created);
+    return mapper.jpa(created);
   }
 
   @Override
@@ -55,19 +54,19 @@ public class QuotationAdditionRepositoryJpa implements QuotationAdditionReposito
   @Override
   public Stream<QuotationAddition> findAllBy(QuotationId quotationId) {
     return repository.findAllBy(quotationId)
-      .map(mapper::map);
+      .map(mapper::jpa);
   }
 
   @Override
   public Optional<QuotationAddition> findBy(QuotationAdditionId id) {
     return Optional.ofNullable(repository.findOne(id))
-      .map(mapper::map);
+      .map(mapper::jpa);
   }
 
   @Override
   public void update(QuotationAddition quotationAddition) {
     val entity = repository.findOne(quotationAddition.getId());
-    mapper.pass(mapper.map(quotationAddition), entity);
+    mapper.pass(mapper.jpa(quotationAddition), entity);
     repository.save(entity);
   }
 }
