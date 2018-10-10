@@ -20,7 +20,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import pico.erp.item.data.ItemId;
+import pico.erp.item.ItemId;
 import pico.erp.quotation.item.data.QuotationItemId;
 import pico.erp.shared.TypeDefinitions;
 import pico.erp.shared.data.Auditor;

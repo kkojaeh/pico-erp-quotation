@@ -8,13 +8,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.util.UriTemplate;
-import pico.erp.attachment.category.data.AttachmentCategory;
-import pico.erp.attachment.category.data.AttachmentCategory.AttachmentCategoryImpl;
-import pico.erp.attachment.category.data.AttachmentCategoryId;
-import pico.erp.audit.data.AuditConfiguration;
-import pico.erp.comment.subject.type.data.CommentSubjectType;
-import pico.erp.comment.subject.type.data.CommentSubjectType.CommentSubjectTypeImpl;
-import pico.erp.comment.subject.type.data.CommentSubjectTypeId;
+import pico.erp.attachment.category.AttachmentCategory;
+import pico.erp.attachment.category.AttachmentCategory.AttachmentCategoryImpl;
+import pico.erp.attachment.category.AttachmentCategoryId;
+import pico.erp.audit.AuditConfiguration;
+import pico.erp.comment.subject.type.CommentSubjectType;
+import pico.erp.comment.subject.type.CommentSubjectType.CommentSubjectTypeImpl;
+import pico.erp.comment.subject.type.CommentSubjectTypeId;
 import pico.erp.shared.ApplicationStarter;
 import pico.erp.shared.Public;
 import pico.erp.shared.SpringBootConfigs;
@@ -101,6 +101,5 @@ public class QuotationApplication implements ApplicationStarter {
   public pico.erp.shared.Application start(String... args) {
     return new ApplicationImpl(application().run(args));
   }
-
 
 }

@@ -12,11 +12,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import lombok.val;
-import pico.erp.attachment.data.AttachmentId;
+import pico.erp.attachment.AttachmentId;
 import pico.erp.audit.annotation.Audit;
-import pico.erp.comment.subject.data.CommentSubjectId;
-import pico.erp.company.data.CompanyData;
-import pico.erp.project.data.ProjectData;
+import pico.erp.comment.subject.CommentSubjectId;
+import pico.erp.company.CompanyData;
+import pico.erp.project.ProjectData;
 import pico.erp.quotation.QuotationExceptions.CannotCancelException;
 import pico.erp.quotation.QuotationExceptions.CannotCommitException;
 import pico.erp.quotation.QuotationExceptions.CannotExpireException;
@@ -45,7 +45,7 @@ import pico.erp.quotation.data.QuotationId;
 import pico.erp.quotation.data.QuotationStatusKind;
 import pico.erp.shared.data.Auditor;
 import pico.erp.shared.event.Event;
-import pico.erp.user.data.UserData;
+import pico.erp.user.UserData;
 
 @Builder(toBuilder = true)
 @Getter

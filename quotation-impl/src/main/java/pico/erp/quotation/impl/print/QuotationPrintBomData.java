@@ -3,10 +3,10 @@ package pico.erp.quotation.impl.print;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.experimental.Delegate;
-import pico.erp.bom.data.BomHierarchyData;
-import pico.erp.item.data.ItemData;
-import pico.erp.item.data.ItemSpecData;
-import pico.erp.process.data.ProcessData;
+import pico.erp.bom.BomHierarchyData;
+import pico.erp.item.ItemData;
+import pico.erp.item.spec.ItemSpecData;
+import pico.erp.process.ProcessData;
 
 
 @Builder

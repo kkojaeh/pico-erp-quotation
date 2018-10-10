@@ -6,16 +6,16 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.Value;
-import pico.erp.attachment.data.AttachmentId;
-import pico.erp.company.data.CompanyData;
-import pico.erp.project.data.ProjectData;
+import pico.erp.attachment.AttachmentId;
+import pico.erp.company.CompanyData;
+import pico.erp.project.ProjectData;
 import pico.erp.quotation.data.QuotationExpiryPolicyKind;
 import pico.erp.quotation.data.QuotationId;
 import pico.erp.quotation.data.QuotationPrintSheetOptions;
 import pico.erp.shared.TypeDefinitions;
 import pico.erp.shared.data.Auditor;
 import pico.erp.shared.event.Event;
-import pico.erp.user.data.UserData;
+import pico.erp.user.UserData;
 
 public interface QuotationMessages {
 

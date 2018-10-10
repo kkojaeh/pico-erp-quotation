@@ -7,17 +7,17 @@ import org.mapstruct.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.AuditorAware;
+import pico.erp.bom.BomData;
 import pico.erp.bom.BomService;
-import pico.erp.bom.data.BomData;
+import pico.erp.company.CompanyData;
+import pico.erp.company.CompanyId;
 import pico.erp.company.CompanyService;
-import pico.erp.company.data.CompanyData;
-import pico.erp.company.data.CompanyId;
+import pico.erp.item.ItemData;
+import pico.erp.item.ItemId;
 import pico.erp.item.ItemService;
-import pico.erp.item.data.ItemData;
-import pico.erp.item.data.ItemId;
+import pico.erp.project.ProjectData;
+import pico.erp.project.ProjectId;
 import pico.erp.project.ProjectService;
-import pico.erp.project.data.ProjectData;
-import pico.erp.project.data.ProjectId;
 import pico.erp.quotation.QuotationExceptions.NotFoundException;
 import pico.erp.quotation.QuotationMessages.CancelRequest;
 import pico.erp.quotation.QuotationMessages.DeleteRequest;
@@ -43,9 +43,9 @@ import pico.erp.quotation.item.addition.QuotationItemAdditionRequests;
 import pico.erp.quotation.item.addition.data.QuotationItemAdditionData;
 import pico.erp.quotation.item.data.QuotationItemData;
 import pico.erp.shared.data.Auditor;
+import pico.erp.user.UserData;
+import pico.erp.user.UserId;
 import pico.erp.user.UserService;
-import pico.erp.user.data.UserData;
-import pico.erp.user.data.UserId;
 
 @Mapper
 public abstract class QuotationMapper {

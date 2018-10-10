@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import pico.erp.item.data.ItemId;
+import pico.erp.item.ItemId;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)

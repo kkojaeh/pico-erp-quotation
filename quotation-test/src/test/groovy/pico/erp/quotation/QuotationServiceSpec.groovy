@@ -7,14 +7,14 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
-import pico.erp.company.data.CompanyId
-import pico.erp.project.data.ProjectId
+import pico.erp.company.CompanyId
+import pico.erp.project.ProjectId
 import pico.erp.quotation.data.QuotationExpiryPolicyKind
 import pico.erp.quotation.data.QuotationId
 import pico.erp.quotation.data.QuotationStatusKind
 import pico.erp.quotation.item.QuotationItemService
 import pico.erp.shared.IntegrationConfiguration
-import pico.erp.user.data.UserId
+import pico.erp.user.UserId
 import spock.lang.Specification
 
 import java.time.OffsetDateTime

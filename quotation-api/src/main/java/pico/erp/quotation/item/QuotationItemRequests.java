@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pico.erp.item.data.ItemId;
+import pico.erp.item.ItemId;
 import pico.erp.quotation.data.QuotationId;
 import pico.erp.quotation.item.data.QuotationItemId;
 import pico.erp.shared.TypeDefinitions;

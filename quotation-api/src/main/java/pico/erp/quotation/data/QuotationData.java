@@ -5,11 +5,11 @@ import java.time.OffsetDateTime;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import pico.erp.attachment.data.AttachmentId;
-import pico.erp.comment.subject.data.CommentSubjectId;
-import pico.erp.company.data.CompanyId;
-import pico.erp.project.data.ProjectId;
-import pico.erp.user.data.UserId;
+import pico.erp.attachment.AttachmentId;
+import pico.erp.comment.subject.CommentSubjectId;
+import pico.erp.company.CompanyId;
+import pico.erp.project.ProjectId;
+import pico.erp.user.UserId;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)

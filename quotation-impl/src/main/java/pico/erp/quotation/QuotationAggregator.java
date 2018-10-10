@@ -11,10 +11,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import lombok.val;
-import pico.erp.attachment.data.AttachmentId;
-import pico.erp.comment.subject.data.CommentSubjectId;
-import pico.erp.company.data.CompanyData;
-import pico.erp.project.data.ProjectData;
+import pico.erp.attachment.AttachmentId;
+import pico.erp.comment.subject.CommentSubjectId;
+import pico.erp.company.CompanyData;
+import pico.erp.project.ProjectData;
 import pico.erp.quotation.QuotationMessages.VerifyRequest;
 import pico.erp.quotation.QuotationMessages.VerifyResponse;
 import pico.erp.quotation.addition.QuotationAddition;
@@ -25,7 +25,7 @@ import pico.erp.quotation.data.QuotationStatusKind;
 import pico.erp.quotation.item.QuotationItem;
 import pico.erp.quotation.item.addition.QuotationItemAddition;
 import pico.erp.shared.data.Auditor;
-import pico.erp.user.data.UserData;
+import pico.erp.user.UserData;
 
 @Getter
 @EqualsAndHashCode(callSuper = true)

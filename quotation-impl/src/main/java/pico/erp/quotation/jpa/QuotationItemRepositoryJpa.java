@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import pico.erp.item.data.ItemId;
+import pico.erp.item.ItemId;
 import pico.erp.quotation.data.QuotationId;
 import pico.erp.quotation.item.QuotationItem;
 import pico.erp.quotation.item.QuotationItemRepository;
