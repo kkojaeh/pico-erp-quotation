@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import pico.erp.quotation.QuotationStatusCountPerMonthAggregateView.QuotationStatusCountPerMonthAggregateOptions;
+import pico.erp.quotation.QuotationStatusCountPerMonthAggregateView.Filter;
 import pico.erp.shared.ExtendedLabeledValue;
 import pico.erp.shared.LabeledValue;
 import pico.erp.shared.Public;
@@ -37,7 +37,7 @@ public class QuotationQueryJpa implements QuotationQuery {
   private QueryDslJpaSupport queryDslJpaSupport;
 
   public List<QuotationStatusCountPerMonthAggregateView> aggregateCountStatusPerMonth(
-    QuotationStatusCountPerMonthAggregateOptions options) {
+    Filter options) {
 
     val query = new JPAQuery<QuotationStatusCountPerMonthAggregateView>(entityManager);
     val select = Projections

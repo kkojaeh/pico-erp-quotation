@@ -18,7 +18,10 @@ public class QuotationStatusCountPerMonthAggregateView {
   Integer yearMonth;
 
   @Data
-  public static class QuotationStatusCountPerMonthAggregateOptions {
+  @NoArgsConstructor
+  @AllArgsConstructor
+  @Builder
+  public static class Filter {
 
     int year;
 
