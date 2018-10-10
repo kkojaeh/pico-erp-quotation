@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 import javax.validation.constraints.NotNull;
 import org.springframework.stereotype.Repository;
-import pico.erp.quotation.data.QuotationId;
 
 @Repository
 public interface QuotationRepository {

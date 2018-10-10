@@ -16,7 +16,6 @@ import pico.erp.bom.BomData;
 import pico.erp.item.ItemData;
 import pico.erp.quotation.Quotation;
 import pico.erp.quotation.item.addition.QuotationItemAddition;
-import pico.erp.quotation.item.data.QuotationItemId;
 import pico.erp.shared.TypeDefinitions;
 import pico.erp.shared.event.Event;
 

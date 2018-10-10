@@ -10,14 +10,12 @@ import org.springframework.transaction.annotation.Transactional
 import pico.erp.company.CompanyId
 import pico.erp.item.ItemId
 import pico.erp.project.ProjectId
+import pico.erp.quotation.addition.QuotationAdditionId
 import pico.erp.quotation.addition.QuotationAdditionRequests
 import pico.erp.quotation.addition.QuotationAdditionService
-import pico.erp.quotation.addition.data.QuotationAdditionId
-import pico.erp.quotation.data.QuotationExpiryPolicyKind
-import pico.erp.quotation.data.QuotationId
+import pico.erp.quotation.item.QuotationItemId
 import pico.erp.quotation.item.QuotationItemRequests
 import pico.erp.quotation.item.QuotationItemService
-import pico.erp.quotation.item.data.QuotationItemId
 import pico.erp.shared.IntegrationConfiguration
 import pico.erp.user.UserId
 import spock.lang.Specification

@@ -7,13 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import pico.erp.quotation.QuotationMapper;
-import pico.erp.quotation.data.QuotationId;
+import pico.erp.quotation.QuotationId;
 import pico.erp.quotation.item.addition.QuotationItemAdditionRequests.CreateRequest;
 import pico.erp.quotation.item.addition.QuotationItemAdditionRequests.DeleteRequest;
 import pico.erp.quotation.item.addition.QuotationItemAdditionRequests.UpdateRequest;
-import pico.erp.quotation.item.addition.data.QuotationItemAdditionData;
-import pico.erp.quotation.item.addition.data.QuotationItemAdditionId;
 import pico.erp.shared.Public;
 import pico.erp.shared.event.EventPublisher;
 
@@ -28,7 +25,7 @@ public class QuotationItemAdditionServiceLogic implements QuotationItemAdditionS
   private EventPublisher eventPublisher;
 
   @Autowired
-  private QuotationMapper mapper;
+  private QuotationItemAdditionMapper mapper;
 
   @Autowired
   private QuotationItemAdditionRepository quotationItemAdditionRepository;

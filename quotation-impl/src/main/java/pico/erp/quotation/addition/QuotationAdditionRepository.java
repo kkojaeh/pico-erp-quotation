@@ -3,8 +3,7 @@ package pico.erp.quotation.addition;
 import java.util.Optional;
 import java.util.stream.Stream;
 import javax.validation.constraints.NotNull;
-import pico.erp.quotation.addition.data.QuotationAdditionId;
-import pico.erp.quotation.data.QuotationId;
+import pico.erp.quotation.QuotationId;
 
 public interface QuotationAdditionRepository {
 

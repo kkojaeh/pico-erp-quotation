@@ -12,7 +12,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 import pico.erp.quotation.Quotation;
-import pico.erp.quotation.addition.data.QuotationAdditionId;
 import pico.erp.shared.TypeDefinitions;
 import pico.erp.shared.event.Event;
 

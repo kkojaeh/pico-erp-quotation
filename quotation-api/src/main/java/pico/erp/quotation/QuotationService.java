@@ -11,8 +11,6 @@ import pico.erp.quotation.QuotationRequests.NextDraftRequest;
 import pico.erp.quotation.QuotationRequests.PrepareRequest;
 import pico.erp.quotation.QuotationRequests.PrintSheetRequest;
 import pico.erp.quotation.QuotationRequests.UpdateRequest;
-import pico.erp.quotation.data.QuotationData;
-import pico.erp.quotation.data.QuotationId;
 import pico.erp.shared.data.ContentInputStream;
 
 public interface QuotationService {

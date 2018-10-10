@@ -22,7 +22,6 @@ import pico.erp.quotation.item.QuotationItemMessages.ApplyItemAdditionRequest;
 import pico.erp.quotation.item.QuotationItemMessages.ApplyItemAdditionResponse;
 import pico.erp.quotation.item.QuotationItemMessages.FixUnitPriceRequest;
 import pico.erp.quotation.item.QuotationItemMessages.FixUnitPriceResponse;
-import pico.erp.quotation.item.data.QuotationItemId;
 import pico.erp.shared.event.Event;
 
 @Getter

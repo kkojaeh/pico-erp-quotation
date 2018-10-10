@@ -9,8 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pico.erp.quotation.addition.data.QuotationAdditionId;
-import pico.erp.quotation.data.QuotationId;
+import pico.erp.quotation.QuotationId;
 import pico.erp.shared.TypeDefinitions;
 
 public interface QuotationAdditionRequests {

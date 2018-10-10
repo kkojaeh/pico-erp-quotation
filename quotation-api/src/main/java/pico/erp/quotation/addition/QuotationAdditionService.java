@@ -3,12 +3,10 @@ package pico.erp.quotation.addition;
 import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import pico.erp.quotation.QuotationId;
 import pico.erp.quotation.addition.QuotationAdditionRequests.CreateRequest;
 import pico.erp.quotation.addition.QuotationAdditionRequests.DeleteRequest;
 import pico.erp.quotation.addition.QuotationAdditionRequests.UpdateRequest;
-import pico.erp.quotation.addition.data.QuotationAdditionData;
-import pico.erp.quotation.addition.data.QuotationAdditionId;
-import pico.erp.quotation.data.QuotationId;
 
 public interface QuotationAdditionService {
 

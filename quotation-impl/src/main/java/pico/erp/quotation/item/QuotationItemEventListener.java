@@ -19,8 +19,8 @@ import pico.erp.quotation.QuotationRepository;
 import pico.erp.quotation.item.QuotationItemMessages.ApplyItemAdditionRequest;
 import pico.erp.quotation.item.addition.QuotationItemAdditionEvents;
 import pico.erp.quotation.item.addition.QuotationItemAdditionExceptions;
+import pico.erp.quotation.item.addition.QuotationItemAdditionId;
 import pico.erp.quotation.item.addition.QuotationItemAdditionRepository;
-import pico.erp.quotation.item.addition.data.QuotationItemAdditionId;
 import pico.erp.shared.event.EventPublisher;
 
 @SuppressWarnings("unused")

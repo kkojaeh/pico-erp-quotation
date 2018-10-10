@@ -3,7 +3,6 @@ package pico.erp.quotation.item;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pico.erp.quotation.item.data.QuotationItemId;
 import pico.erp.shared.event.Event;
 
 public interface QuotationItemEvents {
