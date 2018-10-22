@@ -37,7 +37,7 @@ public class QuotationItemEntity implements Serializable {
 
   @EmbeddedId
   @AttributeOverrides({
-    @AttributeOverride(name = "value", column = @Column(name = "ID", length = TypeDefinitions.ID_LENGTH))
+    @AttributeOverride(name = "value", column = @Column(name = "ID", length = TypeDefinitions.UUID_BINARY_LENGTH))
   })
   QuotationItemId id;
 
@@ -46,14 +46,9 @@ public class QuotationItemEntity implements Serializable {
   QuotationEntity quotation;
 
   @AttributeOverrides({
-    @AttributeOverride(name = "value", column = @Column(name = "ITEM_ID", length = TypeDefinitions.ID_LENGTH))
+    @AttributeOverride(name = "value", column = @Column(name = "ITEM_ID", length = TypeDefinitions.UUID_BINARY_LENGTH))
   })
   ItemId itemId;
-
-  /*@AttributeOverrides({
-    @AttributeOverride(name = "value", column = @Column(name = "BOM_ID", length = TypeDefinitions.ID_LENGTH))
-  })
-  BomId bomId;*/
 
   @Column(length = TypeDefinitions.DESCRIPTION_LENGTH)
   String description;

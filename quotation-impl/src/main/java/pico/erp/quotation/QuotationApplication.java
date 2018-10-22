@@ -66,7 +66,7 @@ public class QuotationApplication implements ApplicationStarter {
       info -> new UriTemplate(template).expand(new HashMap<String, String>() {
         {
           put("subjectId", info.getSubjectId().getValue());
-          put("commentId", info.getId().getValue());
+          put("commentId", info.getId().getValue().toString());
         }
       }));
   }

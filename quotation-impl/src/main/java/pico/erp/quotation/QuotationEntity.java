@@ -54,7 +54,7 @@ public class QuotationEntity implements Serializable {
 
   @EmbeddedId
   @AttributeOverrides({
-    @AttributeOverride(name = "value", column = @Column(name = "ID", length = TypeDefinitions.ID_LENGTH))
+    @AttributeOverride(name = "value", column = @Column(name = "ID", length = TypeDefinitions.UUID_BINARY_LENGTH))
   })
   QuotationId id;
 
@@ -64,7 +64,7 @@ public class QuotationEntity implements Serializable {
   QuotationCode code;
 
   @AttributeOverrides({
-    @AttributeOverride(name = "value", column = @Column(name = "PREVIOUS_ID", length = TypeDefinitions.ID_LENGTH))
+    @AttributeOverride(name = "value", column = @Column(name = "PREVIOUS_ID", length = TypeDefinitions.UUID_BINARY_LENGTH))
   })
   QuotationId previousId;
 
@@ -77,7 +77,7 @@ public class QuotationEntity implements Serializable {
   int revision;
 
   @AttributeOverrides({
-    @AttributeOverride(name = "value", column = @Column(name = "PROJECT_ID", length = TypeDefinitions.ID_LENGTH))
+    @AttributeOverride(name = "value", column = @Column(name = "PROJECT_ID", length = TypeDefinitions.UUID_BINARY_LENGTH))
   })
   ProjectId projectId;
 

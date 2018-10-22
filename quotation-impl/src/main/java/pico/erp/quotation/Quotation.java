@@ -163,7 +163,7 @@ public class Quotation {
     project = request.getProject();
     customer = request.getCustomer();
     manager = request.getManager();
-    commentSubjectId = CommentSubjectId.from(id.getValue());
+    commentSubjectId = CommentSubjectId.from(id.getValue().toString());
     protectedDescription = request.getProtectedDescription();
     publicDescription = request.getPublicDescription();
     attachmentId = request.getAttachmentId();
