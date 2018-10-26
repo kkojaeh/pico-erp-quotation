@@ -47,9 +47,9 @@ create table qot_quotation_addition (
 	description varchar(200),
 	name varchar(50),
 	quantity decimal(19,5),
+	quotation_id binary(16),
 	remark varchar(50),
 	unit_price decimal(19,2),
-	quotation_id binary(16),
 	primary key (id)
 ) engine=InnoDB;
 
@@ -74,9 +74,9 @@ create table qot_quotation_item (
 	original_amount decimal(19,2),
 	original_unit_price decimal(19,2),
 	quantity decimal(19,2),
+	quotation_id binary(16),
 	remark varchar(50),
 	unit_price_manually_fixed bit not null,
-	quotation_id binary(16),
 	primary key (id)
 ) engine=InnoDB;
 
@@ -88,22 +88,19 @@ create table qot_quotation_item_addition (
 	created_date datetime,
 	description varchar(200),
 	name varchar(50),
-	remark varchar(50),
 	quotation_id binary(16),
+	remark varchar(50),
 	primary key (id)
 ) engine=InnoDB;
 
-create index QOT_QUOTATION_STATUS_IDX
+create index IDX3fhj6mxk8xjl8dcrjpil5rhhr
 	on qot_quotation (status);
 
-alter table qot_quotation_addition
-	add constraint FKxn8vns472mlg95drnflvmgv2 foreign key (quotation_id)
-	references qot_quotation (id);
+create index IDX5bmtiq79erjay6mup1d3i9rcv
+	on qot_quotation_addition (quotation_id);
 
-alter table qot_quotation_item
-	add constraint FKhh5xb2tmerm8wd4s33xtv57s1 foreign key (quotation_id)
-	references qot_quotation (id);
+create index IDXbpi3qrai8cja8rywn212qbqag
+	on qot_quotation_item (quotation_id);
 
-alter table qot_quotation_item_addition
-	add constraint FKlsy3fe1onjisvkoat72ectqbi foreign key (quotation_id)
-	references qot_quotation (id);
+create index IDXfhk4ly2r3dg1sqdg4ge5xmvws
+	on qot_quotation_item_addition (quotation_id);
