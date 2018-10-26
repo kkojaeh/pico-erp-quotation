@@ -17,9 +17,6 @@ import pico.erp.quotation.QuotationEvents;
 import pico.erp.quotation.QuotationMessages;
 import pico.erp.quotation.QuotationRepository;
 import pico.erp.quotation.item.QuotationItemMessages.ApplyItemAdditionRequest;
-import pico.erp.quotation.item.addition.QuotationItemAdditionEvents;
-import pico.erp.quotation.item.addition.QuotationItemAdditionExceptions;
-import pico.erp.quotation.item.addition.QuotationItemAdditionId;
 import pico.erp.quotation.item.addition.QuotationItemAdditionRepository;
 import pico.erp.shared.event.EventPublisher;
 
@@ -67,25 +64,6 @@ public class QuotationItemEventListener {
       });
   }
 
-  private void onQuotationItemAdditionChanged(QuotationItemAdditionId id) {
-    val itemAddition = quotationItemAdditionRepository
-      .findBy(id)
-      .orElseThrow(QuotationItemAdditionExceptions.NotFoundException::new);
-    val quotation = itemAddition.getQuotation();
-    if (!quotation.canModify()) {
-      return;
-    }
-    val itemAdditions = quotationItemAdditionRepository.findAllBy(quotation.getId())
-      .collect(Collectors.toList());
-    quotationItemRepository.findAllBy(quotation.getId())
-      .forEach(item -> {
-        val response = item
-          .apply(new ApplyItemAdditionRequest(itemAdditions));
-        quotationItemRepository.update(item);
-        eventPublisher.publishEvents(response.getEvents());
-      });
-  }
-
   @EventListener
   @JmsListener(destination = LISTENER_NAME + "." + QuotationEvents.NextDraftedEvent.CHANNEL)
   public void onQuotationNextDrafted(QuotationEvents.NextDraftedEvent event) {
@@ -102,26 +80,18 @@ public class QuotationItemEventListener {
 
   @EventListener
   @JmsListener(destination = LISTENER_NAME + "."
-    + QuotationItemAdditionEvents.CreatedEvent.CHANNEL)
+    + QuotationEvents.AdditionChangedEvent.CHANNEL)
   public void onQuotationItemAdditionCreated(
-    QuotationItemAdditionEvents.CreatedEvent event) {
-    onQuotationItemAdditionChanged(event.getQuotationItemAdditionId());
-  }
-
-  @EventListener
-  @JmsListener(destination = LISTENER_NAME + "."
-    + QuotationItemAdditionEvents.DeletedEvent.CHANNEL)
-  public void onQuotationItemAdditionDeleted(
-    QuotationItemAdditionEvents.DeletedEvent event) {
-    onQuotationItemAdditionChanged(event.getQuotationItemAdditionId());
-  }
-
-  @EventListener
-  @JmsListener(destination = LISTENER_NAME + "."
-    + QuotationItemAdditionEvents.UpdatedEvent.CHANNEL)
-  public void onQuotationItemAdditionUpdated(
-    QuotationItemAdditionEvents.UpdatedEvent event) {
-    onQuotationItemAdditionChanged(event.getQuotationItemAdditionId());
+    QuotationEvents.AdditionChangedEvent event) {
+    val itemAdditions = quotationItemAdditionRepository.findAllBy(event.getQuotationId())
+      .collect(Collectors.toList());
+    quotationItemRepository.findAllBy(event.getQuotationId())
+      .forEach(item -> {
+        val response = item
+          .apply(new ApplyItemAdditionRequest(itemAdditions));
+        quotationItemRepository.update(item);
+        eventPublisher.publishEvents(response.getEvents());
+      });
   }
 
   @EventListener

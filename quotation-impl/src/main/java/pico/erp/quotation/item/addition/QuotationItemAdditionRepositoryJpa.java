@@ -19,7 +19,7 @@ interface QuotationItemAdditionEntityRepository extends
     @Query("SELECT q FROM Quotation q JOIN q.items i WHERE treat(i as BomQuotationItemAddition).bomId = :bomId")
     */
 
-  @Query("SELECT qia FROM QuotationItemAddition qia WHERE qia.quotation.id = :quotationId")
+  @Query("SELECT qia FROM QuotationItemAddition qia WHERE qia.quotationId = :quotationId")
   Stream<QuotationItemAdditionEntity> findAllBy(@Param("quotationId") QuotationId quotationId);
 
 }

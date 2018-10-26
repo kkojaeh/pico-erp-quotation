@@ -10,8 +10,7 @@ import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.Index;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -20,13 +19,15 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import pico.erp.quotation.QuotationEntity;
+import pico.erp.quotation.QuotationId;
 import pico.erp.shared.TypeDefinitions;
 import pico.erp.shared.data.Auditor;
 
 @Data
 @Entity(name = "QuotationItemAddition")
-@Table(name = "QOT_QUOTATION_ITEM_ADDITION")
+@Table(name = "QOT_QUOTATION_ITEM_ADDITION", indexes = {
+  @Index(columnList = "QUOTATION_ID")
+})
 @FieldDefaults(level = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -40,9 +41,10 @@ public class QuotationItemAdditionEntity implements Serializable {
   })
   QuotationItemAdditionId id;
 
-  @ManyToOne
-  @JoinColumn(name = "QUOTATION_ID")
-  QuotationEntity quotation;
+  @AttributeOverrides({
+    @AttributeOverride(name = "value", column = @Column(name = "QUOTATION_ID", length = TypeDefinitions.UUID_BINARY_LENGTH))
+  })
+  QuotationId quotationId;
 
   @Column(length = TypeDefinitions.NAME_LENGTH)
   String name;

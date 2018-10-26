@@ -22,7 +22,7 @@ interface QuotationItemEntityRepository extends
   @Query("SELECT qi FROM QuotationItem qi WHERE qi.itemId = :itemId")
   Stream<QuotationItemEntity> findAllBy(@Param("itemId") ItemId itemId);
 
-  @Query("SELECT qi FROM QuotationItem qi WHERE qi.quotation.id = :quotationId")
+  @Query("SELECT qi FROM QuotationItem qi WHERE qi.quotationId = :quotationId")
   Stream<QuotationItemEntity> findAllBy(@Param("quotationId") QuotationId quotationId);
 
 }

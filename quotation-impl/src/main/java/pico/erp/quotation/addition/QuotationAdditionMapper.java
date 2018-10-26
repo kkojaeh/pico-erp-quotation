@@ -7,7 +7,6 @@ import org.mapstruct.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import pico.erp.quotation.Quotation;
-import pico.erp.quotation.QuotationEntity;
 import pico.erp.quotation.QuotationId;
 import pico.erp.quotation.QuotationMapper;
 
@@ -37,18 +36,15 @@ public abstract class QuotationAdditionMapper {
   }
 
   @Mappings({
+    @Mapping(target = "quotationId", source = "quotation.id"),
     @Mapping(target = "createdBy", ignore = true),
     @Mapping(target = "createdDate", ignore = true)
   })
   public abstract QuotationAdditionEntity jpa(QuotationAddition addition);
 
-  protected QuotationEntity jpa(Quotation quotation) {
-    return quotationMapper.jpa(quotation);
-  }
-
   public QuotationAddition jpa(QuotationAdditionEntity entity) {
     return QuotationAddition.builder()
-      .quotation(quotationMapper.jpa(entity.getQuotation()))
+      .quotation(map(entity.getQuotationId()))
       .id(entity.getId())
       .name(entity.getName())
       .description(entity.getDescription())

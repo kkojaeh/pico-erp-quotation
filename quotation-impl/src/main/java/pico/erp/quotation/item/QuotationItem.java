@@ -17,6 +17,7 @@ import pico.erp.bom.BomData;
 import pico.erp.bom.unit.cost.BomUnitCostData;
 import pico.erp.item.ItemData;
 import pico.erp.quotation.Quotation;
+import pico.erp.quotation.QuotationEvents;
 import pico.erp.quotation.QuotationExceptions.CannotModifyException;
 import pico.erp.quotation.item.QuotationItemMessages.ApplyItemAdditionRequest;
 import pico.erp.quotation.item.QuotationItemMessages.ApplyItemAdditionResponse;
@@ -114,7 +115,11 @@ public class QuotationItem {
     this.discountRate = request.getDiscountRate();
     applyUnitPrices();
     return new QuotationItemMessages.CreateResponse(
-      Arrays.asList(new QuotationItemEvents.CreatedEvent(this.id)));
+      Arrays.asList(
+        new QuotationItemEvents.CreatedEvent(this.id),
+        new QuotationEvents.MemberChangedEvent(this.quotation.getId())
+      )
+    );
   }
 
   public QuotationItemMessages.UpdateResponse apply(
@@ -129,7 +134,11 @@ public class QuotationItem {
     this.discountRate = request.getDiscountRate();
     applyUnitPrices();
     return new QuotationItemMessages.UpdateResponse(
-      Arrays.asList(new QuotationItemEvents.UpdatedEvent(this.id)));
+      Arrays.asList(
+        new QuotationItemEvents.UpdatedEvent(this.id),
+        new QuotationEvents.MemberChangedEvent(this.quotation.getId())
+      )
+    );
   }
 
   public QuotationItemMessages.DeleteResponse apply(
@@ -138,7 +147,11 @@ public class QuotationItem {
       throw new CannotModifyException();
     }
     return new QuotationItemMessages.DeleteResponse(
-      Arrays.asList(new QuotationItemEvents.DeletedEvent(this.id)));
+      Arrays.asList(
+        new QuotationItemEvents.DeletedEvent(this.id),
+        new QuotationEvents.MemberChangedEvent(this.quotation.getId())
+      )
+    );
   }
 
   public QuotationItemMessages.NextDraftResponse apply(
@@ -161,6 +174,7 @@ public class QuotationItem {
     if (!sumOfAdditionRate.equals(additionalRate)) {
       additionalRate = sumOfAdditionRate;
       events.add(new QuotationItemEvents.UpdatedEvent(this.id));
+      events.add(new QuotationEvents.MemberChangedEvent(this.quotation.getId()));
     }
     return new ApplyItemAdditionResponse(events);
   }
@@ -172,7 +186,11 @@ public class QuotationItem {
     }
     applyUnitPrices();
     return new QuotationItemMessages.VerifyResponse(
-      Arrays.asList(new QuotationItemEvents.UpdatedEvent(this.id)));
+      Arrays.asList(
+        new QuotationItemEvents.UpdatedEvent(this.id),
+        new QuotationEvents.MemberChangedEvent(this.quotation.getId())
+      )
+    );
   }
 
   public FixUnitPriceResponse apply(
@@ -188,7 +206,11 @@ public class QuotationItem {
     indirectLaborUnitPrice = request.getIndirectLaborUnitPrice();
     indirectExpensesUnitPrice = request.getIndirectExpensesUnitPrice();
     return new FixUnitPriceResponse(
-      Arrays.asList(new QuotationItemEvents.UpdatedEvent(this.id)));
+      Arrays.asList(
+        new QuotationItemEvents.UpdatedEvent(this.id),
+        new QuotationEvents.MemberChangedEvent(this.quotation.getId())
+      )
+    );
   }
 
   private void applyUnitPrices() {
@@ -218,7 +240,8 @@ public class QuotationItem {
 
   public BigDecimal getFinalizedAmount() {
     return Optional.ofNullable(quantity)
-      .map(quantity -> getFinalizedUnitPrice().multiply(quantity).setScale(2, BigDecimal.ROUND_HALF_UP))
+      .map(quantity -> getFinalizedUnitPrice().multiply(quantity)
+        .setScale(2, BigDecimal.ROUND_HALF_UP))
       .orElse(null);
   }
 
@@ -228,12 +251,14 @@ public class QuotationItem {
    */
   public BigDecimal getFinalizedUnitPrice() {
     BigDecimal discounted = this.getDiscountedUnitPrice();
-    return discounted.add(discounted.multiply(additionalRate)).setScale(2, BigDecimal.ROUND_HALF_UP);
+    return discounted.add(discounted.multiply(additionalRate))
+      .setScale(2, BigDecimal.ROUND_HALF_UP);
   }
 
   public BigDecimal getOriginalAmount() {
     return Optional.ofNullable(quantity)
-      .map(quantity -> getOriginalUnitPrice().multiply(quantity).setScale(2, BigDecimal.ROUND_HALF_UP))
+      .map(
+        quantity -> getOriginalUnitPrice().multiply(quantity).setScale(2, BigDecimal.ROUND_HALF_UP))
       .orElse(null);
   }
 

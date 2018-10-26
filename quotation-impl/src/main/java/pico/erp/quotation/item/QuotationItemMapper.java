@@ -14,7 +14,6 @@ import pico.erp.item.ItemData;
 import pico.erp.item.ItemId;
 import pico.erp.item.ItemService;
 import pico.erp.quotation.Quotation;
-import pico.erp.quotation.QuotationEntity;
 import pico.erp.quotation.QuotationId;
 import pico.erp.quotation.QuotationMapper;
 import pico.erp.quotation.item.QuotationItemRequests.CreateRequest;
@@ -41,15 +40,11 @@ public abstract class QuotationItemMapper {
       .orElse(null);
   }
 
-  protected QuotationEntity jpa(Quotation quotation) {
-    return quotationMapper.jpa(quotation);
-  }
-
   public QuotationItem jpa(QuotationItemEntity entity) {
     val itemId = entity.getItemId();
     val bom = bomService.exists(itemId) ? bomService.get(itemId) : null;
     return QuotationItem.builder()
-      .quotation(quotationMapper.jpa(entity.getQuotation()))
+      .quotation(map(entity.getQuotationId()))
       .bom(bom)
       .item(map(entity.getItemId()))
       .description(entity.getDescription())
@@ -87,6 +82,7 @@ public abstract class QuotationItemMapper {
 
   @Mappings({
     //@Mapping(target = "bomId", source = "bom.id"),
+    @Mapping(target = "quotationId", source = "quotation.id"),
     @Mapping(target = "itemId", source = "item.id"),
     @Mapping(target = "createdBy", ignore = true),
     @Mapping(target = "createdDate", ignore = true)

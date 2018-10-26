@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pico.erp.quotation.Quotation;
+import pico.erp.quotation.QuotationEvents;
 import pico.erp.quotation.QuotationExceptions.CannotModifyException;
 
 @EqualsAndHashCode(of = "id")
@@ -42,7 +43,11 @@ public class QuotationItemAddition {
     this.remark = request.getRemark();
     this.additionalRate = request.getAdditionalRate();
     return new QuotationItemAdditionMessages.CreateResponse(
-      Arrays.asList(new QuotationItemAdditionEvents.CreatedEvent(this.id)));
+      Arrays.asList(
+        new QuotationItemAdditionEvents.CreatedEvent(this.id),
+        new QuotationEvents.AdditionChangedEvent(this.quotation.getId())
+      )
+    );
   }
 
   public QuotationItemAdditionMessages.UpdateResponse apply(
@@ -55,7 +60,11 @@ public class QuotationItemAddition {
     this.remark = request.getRemark();
     this.additionalRate = request.getAdditionalRate();
     return new QuotationItemAdditionMessages.UpdateResponse(
-      Arrays.asList(new QuotationItemAdditionEvents.UpdatedEvent(this.id)));
+      Arrays.asList(
+        new QuotationItemAdditionEvents.UpdatedEvent(this.id),
+        new QuotationEvents.AdditionChangedEvent(this.quotation.getId())
+      )
+    );
   }
 
   public QuotationItemAdditionMessages.DeleteResponse apply(
@@ -64,7 +73,11 @@ public class QuotationItemAddition {
       throw new CannotModifyException();
     }
     return new QuotationItemAdditionMessages.DeleteResponse(
-      Arrays.asList(new QuotationItemAdditionEvents.DeletedEvent(this.id)));
+      Arrays.asList(
+        new QuotationItemAdditionEvents.DeletedEvent(this.id),
+        new QuotationEvents.AdditionChangedEvent(this.quotation.getId())
+      )
+    );
   }
 
   public QuotationItemAdditionMessages.NextDraftResponse apply(

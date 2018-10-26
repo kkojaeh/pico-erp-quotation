@@ -126,4 +126,34 @@ public interface QuotationEvents {
     }
 
   }
+
+  @Data
+  @AllArgsConstructor
+  @NoArgsConstructor
+  class MemberChangedEvent implements Event {
+
+    public final static String CHANNEL = "event.quotation.member-changed";
+
+    private QuotationId quotationId;
+
+    public String channel() {
+      return CHANNEL;
+    }
+
+  }
+
+  @Data
+  @AllArgsConstructor
+  @NoArgsConstructor
+  class AdditionChangedEvent implements Event {
+
+    public final static String CHANNEL = "event.quotation.addition-changed";
+
+    private QuotationId quotationId;
+
+    public String channel() {
+      return CHANNEL;
+    }
+
+  }
 }
