@@ -2,7 +2,6 @@ package pico.erp.quotation;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
-import org.springframework.transaction.annotation.Transactional;
 import pico.erp.quotation.addition.QuotationAdditionRequests;
 import pico.erp.quotation.addition.QuotationAdditionService;
 import pico.erp.quotation.item.QuotationItemRequests;
@@ -19,7 +17,8 @@ import pico.erp.quotation.item.addition.QuotationItemAdditionRequests;
 import pico.erp.quotation.item.addition.QuotationItemAdditionService;
 import pico.erp.shared.ApplicationInitializer;
 
-@Transactional
+//@Transactional
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Configuration
 @Profile({"!development", "!production"})
 public class TestDataInitializer implements ApplicationInitializer {
@@ -51,9 +50,9 @@ public class TestDataInitializer implements ApplicationInitializer {
     dataProperties.quotationItemAdditions.stream().forEach(quotationItemAdditionService::create);
     dataProperties.quotationAdditions.stream().forEach(quotationAdditionService::create);
     // 품목 부가비 등의 처리가 이벤트로 처리 되기 때문에 처리전 기다리도록 함
-    TimeUnit.SECONDS.sleep(1l);
+    //TimeUnit.SECONDS.sleep(1l);
     dataProperties.preparedQuotations.forEach(quotationService::prepare);
-    TimeUnit.SECONDS.sleep(1l);
+    //TimeUnit.SECONDS.sleep(1l);
     dataProperties.committedQuotations.forEach(quotationService::commit);
   }
 
