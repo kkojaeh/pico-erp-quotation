@@ -197,7 +197,7 @@ public class QuotationEntity implements Serializable {
   Auditor canceler;
 
   @AttributeOverrides({
-    @AttributeOverride(name = "value", column = @Column(name = "ATTACHMENT_ID", length = TypeDefinitions.ID_LENGTH))
+    @AttributeOverride(name = "value", column = @Column(name = "ATTACHMENT_ID", length = TypeDefinitions.UUID_BINARY_LENGTH))
   })
   AttachmentId attachmentId;
 

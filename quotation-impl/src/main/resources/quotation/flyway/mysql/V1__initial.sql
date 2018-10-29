@@ -1,6 +1,6 @@
 create table qot_quotation (
 	id binary(16) not null,
-	attachment_id binary(50),
+	attachment_id binary(16),
 	canceler_id varchar(50),
 	canceler_name varchar(50),
 	code varchar(20),
