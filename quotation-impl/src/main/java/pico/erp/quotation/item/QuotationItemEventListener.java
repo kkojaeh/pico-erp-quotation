@@ -81,7 +81,7 @@ public class QuotationItemEventListener {
   @EventListener
   @JmsListener(destination = LISTENER_NAME + "."
     + QuotationEvents.AdditionChangedEvent.CHANNEL)
-  public void onQuotationItemAdditionCreated(
+  public void onQuotationAdditionChanged(
     QuotationEvents.AdditionChangedEvent event) {
     val itemAdditions = quotationItemAdditionRepository.findAllBy(event.getQuotationId())
       .collect(Collectors.toList());
