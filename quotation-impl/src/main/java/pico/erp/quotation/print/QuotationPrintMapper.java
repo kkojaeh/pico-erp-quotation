@@ -82,11 +82,11 @@ public abstract class QuotationPrintMapper {
 
   protected List<QuotationPrintBomData> map(BomHierarchyData data) {
     final List<QuotationPrintBomData> boms = new LinkedList<>();
-    data.visit((bom, level) -> {
+    data.visitInOrder((bom, parents) -> {
       boms.add(
         QuotationPrintBomData.builder()
           .bom(bom)
-          .level(level)
+          .level(parents.size())
           .item(map(bom.getItemId()))
           .process(map(bom.getProcessId()))
           .itemSpec(map(bom.getItemSpecId()))

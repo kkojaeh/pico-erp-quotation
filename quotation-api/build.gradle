@@ -19,4 +19,6 @@ dependencies {
 
   compile("com.github.kkojaeh.pico-erp-attachment:attachment-api:${attachmentVersion}")
 
+  compile("com.github.kkojaeh.pico-erp-process:process-api:${processVersion}")
+
 }
