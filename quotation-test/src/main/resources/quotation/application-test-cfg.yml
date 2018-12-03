@@ -1,5 +1,11 @@
 data:
   quotation-drafts:
+  - id: quotation-test
+    name: 테스트용 견적
+    project-id: sample-project1
+    customer-id: CUST1
+    expiry-policy: IN_YEAR
+    manager-id: ysh
     - id: quotation-1
       name: 첫째 견적
       project-id: sample-project1

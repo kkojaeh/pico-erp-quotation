@@ -7,14 +7,11 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
-import pico.erp.company.CompanyId
 import pico.erp.item.ItemId
-import pico.erp.project.ProjectId
 import pico.erp.quotation.item.QuotationItemId
 import pico.erp.quotation.item.QuotationItemRequests
 import pico.erp.quotation.item.QuotationItemService
 import pico.erp.shared.IntegrationConfiguration
-import pico.erp.user.UserId
 import spock.lang.Specification
 
 @SpringBootTest(classes = [IntegrationConfiguration])
@@ -31,56 +28,52 @@ class QuotationItemServiceSpec extends Specification {
   @Autowired
   QuotationItemService quotationItemService
 
-  def quotationId = QuotationId.from("test")
+  def quotationId = QuotationId.from("quotation-test")
+
+  def id1 = QuotationItemId.from("quotation-item-1")
+
+  def id2 = QuotationItemId.from("quotation-item-2")
+
+  def itemId1 = ItemId.from("item-1")
+
+  def itemId2 = ItemId.from("item-2")
 
   def setup() {
-    quotationService.draft(new QuotationRequests.DraftRequest(
-      id: quotationId,
-      name: "테스트 견적",
-      expiryPolicy: QuotationExpiryPolicyKind.IN_HALF,
-      projectId: ProjectId.from("sample-project1"),
-      customerId: CompanyId.from("CUST1"),
-      managerId: UserId.from("ysh")
-    ))
+
   }
 
-
-  def "견적에 BOM 품목을 추가"() {
-    when:
+  def addItem1() {
     quotationItemService.create(
       new QuotationItemRequests.CreateRequest(
-        id: QuotationItemId.from("quotation-item-1"),
+        id: id1,
         quotationId: quotationId,
-        itemId: ItemId.from("item-1"),
+        itemId: itemId1,
         quantity: 1,
         discountRate: 0.15,
         description: "BOM 품목 설명",
         remark: "존재하지 않는 BOM"
       )
     )
-    def quotation = quotationService.get(quotationId)
-    def items = quotationItemService.getAll(quotationId)
-    then:
-    items.size() == 1
   }
 
-  def "견적에 입력 품목을 추가하여 금액 확인"() {
-    when:
+  def addItem2() {
     quotationItemService.create(
       new QuotationItemRequests.CreateRequest(
-        id: QuotationItemId.from("quotation-item-1"),
+        id: id2,
         quotationId: quotationId,
-        itemId: ItemId.from("item-1"),
-        quantity: 1,
-        discountRate: 0.15,
-        description: "직접 입력 품목 설명",
-        remark: "품목 없이 직접입력함"
+        itemId: itemId2,
+        quantity: 2,
+        discountRate: 0.20,
+        description: "직접 입력 품목 설명2",
+        remark: "품목 없이 직접입력함2"
       )
     )
+  }
 
+  def fixUnitPrice1() {
     quotationItemService.fixUnitPrice(
       new QuotationItemRequests.FixUnitPriceRequest(
-        id: QuotationItemId.from("quotation-item-1"),
+        id: id1,
         originalUnitPrice: 500,
         directLaborUnitPrice: 100,
         indirectLaborUnitPrice: 100,
@@ -89,22 +82,12 @@ class QuotationItemServiceSpec extends Specification {
         indirectExpensesUnitPrice: 100
       )
     )
+  }
 
-    quotationItemService.create(
-      new QuotationItemRequests.CreateRequest(
-        id: QuotationItemId.from("quotation-item-2"),
-        quotationId: quotationId,
-        itemId: ItemId.from("item-2"),
-        quantity: 2,
-        discountRate: 0.20,
-        description: "직접 입력 품목 설명2",
-        remark: "품목 없이 직접입력함2"
-      )
-    )
-
+  def fixUnitPrice2() {
     quotationItemService.fixUnitPrice(
       new QuotationItemRequests.FixUnitPriceRequest(
-        id: QuotationItemId.from("quotation-item-2"),
+        id: id2,
         originalUnitPrice: 400,
         directLaborUnitPrice: 100,
         indirectLaborUnitPrice: 100,
@@ -113,6 +96,41 @@ class QuotationItemServiceSpec extends Specification {
         indirectExpensesUnitPrice: 50
       )
     )
+  }
+
+
+  def "조회 - 아이디로 조회"() {
+    when:
+    addItem1()
+    def item = quotationItemService.get(id1)
+
+    then:
+    item.id == id1
+    item.quotationId == quotationId
+    item.itemId == itemId1
+    item.quantity == 1
+    item.discountRate == 0.15
+    item.description == "BOM 품목 설명"
+    item.remark == "존재하지 않는 BOM"
+  }
+
+  def "조회 - 견적 아이디로 조회"() {
+    when:
+    addItem1()
+    def items = quotationItemService.getAll(quotationId)
+    then:
+    items.size() == 1
+  }
+
+  def "견적에 입력 품목을 추가하여 금액 확인"() {
+    when:
+
+    addItem1()
+    addItem2()
+    fixUnitPrice1()
+    fixUnitPrice2()
+
+
     def q = quotationService.get(quotationId)
     def totalItemAmount = (500 * 1 * 0.85) + (400 * 2 * 0.8)
     def totalItemOriginalAmount = (500 * 1) + (400 * 2)

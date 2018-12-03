@@ -33,7 +33,7 @@ public class QuotationItemAddition {
 
   public QuotationItemAdditionMessages.CreateResponse apply(
     QuotationItemAdditionMessages.CreateRequest request) {
-    if (!request.getQuotation().canModify()) {
+    if (!request.getQuotation().isUpdatable()) {
       throw new CannotModifyException();
     }
     this.id = request.getId();
@@ -52,7 +52,7 @@ public class QuotationItemAddition {
 
   public QuotationItemAdditionMessages.UpdateResponse apply(
     QuotationItemAdditionMessages.UpdateRequest request) {
-    if (!this.quotation.canModify()) {
+    if (!this.quotation.isUpdatable()) {
       throw new CannotModifyException();
     }
     this.name = request.getName();
@@ -69,7 +69,7 @@ public class QuotationItemAddition {
 
   public QuotationItemAdditionMessages.DeleteResponse apply(
     QuotationItemAdditionMessages.DeleteRequest request) {
-    if (!this.quotation.canModify()) {
+    if (!this.quotation.isUpdatable()) {
       throw new CannotModifyException();
     }
     return new QuotationItemAdditionMessages.DeleteResponse(

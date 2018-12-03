@@ -30,60 +30,72 @@ class QuotationServiceSpec extends Specification {
   @Autowired
   QuotationItemService quotationItemService
 
-  def quotationId = QuotationId.from("test")
+  def id = QuotationId.from("test")
+
+  def unknownId = QuotationId.from("unknown")
+
+  def projectId = ProjectId.from("sample-project1")
+
+  def customerId = CompanyId.from("CUST1")
+
+  def managerId = UserId.from("ysh")
 
   def setup() {
     quotationService.draft(new QuotationRequests.DraftRequest(
-      id: quotationId,
+      id: id,
       name: "테스트 견적",
       expiryPolicy: QuotationExpiryPolicyKind.IN_HALF,
-      projectId: ProjectId.from("sample-project1"),
-      customerId: CompanyId.from("CUST1"),
-      managerId: UserId.from("ysh")
+      projectId: projectId,
+      customerId: customerId,
+      managerId: managerId
     ))
   }
 
-  def "제출 후 만료 시간이 지나면 취소 처리 된다"() {
+  def "만료 - 제출 후 만료 시간이 지나면 취소"() {
     when:
 
-    quotationService.prepare(new QuotationRequests.PrepareRequest(id: quotationId))
-    quotationService.commit(new QuotationRequests.CommitRequest(id: quotationId))
+    quotationService.prepare(new QuotationRequests.PrepareRequest(id: id))
+    quotationService.commit(new QuotationRequests.CommitRequest(id: id))
     quotationService.expire(new QuotationRequests.ExpireRequest(OffsetDateTime.now().plusMonths(6)))
-    def q = quotationService.get(quotationId)
+    def q = quotationService.get(id)
 
     then:
     q.status == QuotationStatusKind.CANCELED
   }
 
-  def "아이디로 존재하는 견적 확인"() {
+  def "존재 - 아이디로 확인"() {
     when:
-    def exists = quotationService.exists(quotationId)
+    def exists = quotationService.exists(id)
 
     then:
     exists == true
   }
 
-  def "아이디로 존재하지 않는 견적 확인"() {
+  def "존재 - 존재하지 않는 아이디로 확인"() {
     when:
-    def exists = quotationService.exists(QuotationId.from("unknown"))
+    def exists = quotationService.exists(unknownId)
 
     then:
     exists == false
   }
 
-  def "아이디로 존재하는 견적을 조회"() {
+  def "조회 - 아이디로 조회"() {
     when:
-    def q = quotationService.get(quotationId)
+    def q = quotationService.get(id)
 
     then:
     q.name == "테스트 견적"
     q.revision == 1
     q.expiryPolicy == QuotationExpiryPolicyKind.IN_HALF
+    q.projectId == projectId
+    q.customerId == customerId
+    q.managerId == managerId
+    q.name == "테스트 견적"
   }
 
-  def "아이디로 존재하지 않는 견적을 조회"() {
+  def "조회 - 존재하지 않는 아이디로 조회"() {
     when:
-    quotationService.get(QuotationId.from("unknown"))
+    quotationService.get(unknownId)
 
     then:
     thrown(QuotationExceptions.NotFoundException)

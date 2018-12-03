@@ -9,7 +9,6 @@ import lombok.Value;
 import pico.erp.attachment.AttachmentId;
 import pico.erp.company.CompanyData;
 import pico.erp.project.ProjectData;
-import pico.erp.quotation.code.QuotationCodeGenerator;
 import pico.erp.shared.TypeDefinitions;
 import pico.erp.shared.data.Auditor;
 import pico.erp.shared.event.Event;

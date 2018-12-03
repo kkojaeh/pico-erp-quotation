@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import pico.erp.item.ItemId;
+import pico.erp.quotation.QuotationId;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -13,6 +14,8 @@ public class QuotationItemData {
   QuotationItemId id;
 
   ItemId itemId;
+
+  QuotationId quotationId;
 
   /*  String name;*/
 

@@ -90,6 +90,7 @@ public abstract class QuotationItemMapper {
   public abstract QuotationItemEntity jpa(QuotationItem item);
 
   @Mappings({
+    @Mapping(target = "quotationId", source = "quotation.id"),
     @Mapping(target = "itemId", source = "item.id")
   })
   public abstract QuotationItemData map(QuotationItem item);

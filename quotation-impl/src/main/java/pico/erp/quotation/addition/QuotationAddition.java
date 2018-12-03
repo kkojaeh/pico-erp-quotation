@@ -35,7 +35,7 @@ public class QuotationAddition {
 
   public QuotationAdditionMessages.CreateResponse apply(
     QuotationAdditionMessages.CreateRequest request) {
-    if (!request.getQuotation().canModify()) {
+    if (!request.getQuotation().isUpdatable()) {
       throw new CannotModifyException();
     }
     this.id = request.getId();
@@ -55,7 +55,7 @@ public class QuotationAddition {
 
   public QuotationAdditionMessages.UpdateResponse apply(
     QuotationAdditionMessages.UpdateRequest request) {
-    if (!this.quotation.canModify()) {
+    if (!this.quotation.isUpdatable()) {
       throw new CannotModifyException();
     }
     this.name = request.getName();
@@ -73,7 +73,7 @@ public class QuotationAddition {
 
   public QuotationAdditionMessages.DeleteResponse apply(
     QuotationAdditionMessages.DeleteRequest request) {
-    if (!this.quotation.canModify()) {
+    if (!this.quotation.isUpdatable()) {
       throw new CannotModifyException();
     }
     return new QuotationAdditionMessages.DeleteResponse(

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface QuotationRepository {
 
-  long countByCreatedThisMonth();
+  long countCreatedBetween(OffsetDateTime begin, OffsetDateTime end);
 
   Quotation create(@NotNull Quotation quotation);
 

@@ -7,9 +7,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
-import pico.erp.company.CompanyId
 import pico.erp.item.ItemId
-import pico.erp.project.ProjectId
 import pico.erp.quotation.item.QuotationItemId
 import pico.erp.quotation.item.QuotationItemRequests
 import pico.erp.quotation.item.QuotationItemService
@@ -17,7 +15,6 @@ import pico.erp.quotation.item.addition.QuotationItemAdditionId
 import pico.erp.quotation.item.addition.QuotationItemAdditionRequests
 import pico.erp.quotation.item.addition.QuotationItemAdditionService
 import pico.erp.shared.IntegrationConfiguration
-import pico.erp.user.UserId
 import spock.lang.Specification
 
 @SpringBootTest(classes = [IntegrationConfiguration])
@@ -37,25 +34,14 @@ class QuotationItemAdditionServiceSpec extends Specification {
   @Autowired
   QuotationItemAdditionService quotationItemAdditionService
 
-  def quotationId = QuotationId.from("test")
+  def quotationId = QuotationId.from("quotation-test")
+
+  def quotationItemId = QuotationItemId.from("quotation-item-1")
 
   def setup() {
-    quotationService.draft(new QuotationRequests.DraftRequest(
-      id: quotationId,
-      name: "테스트 견적",
-      expiryPolicy: QuotationExpiryPolicyKind.IN_HALF,
-      projectId: ProjectId.from("sample-project1"),
-      customerId: CompanyId.from("CUST1"),
-      managerId: UserId.from("ysh")
-    ))
-  }
-
-
-  def "견적에 추가 단가 적용 항목을 추가하여 금액 확인"() {
-    when:
     quotationItemService.create(
       new QuotationItemRequests.CreateRequest(
-        id: QuotationItemId.from("quotation-item-1"),
+        id: quotationItemId,
         quotationId: quotationId,
         itemId: ItemId.from("item-1"),
         quantity: 1,
@@ -64,6 +50,12 @@ class QuotationItemAdditionServiceSpec extends Specification {
         remark: "존재하지 않는 BOM"
       )
     )
+  }
+
+
+  def "견적에 추가 단가 적용 항목을 추가하여 금액 확인"() {
+    when:
+
     quotationItemAdditionService.create(
       new QuotationItemAdditionRequests.CreateRequest(
         id: QuotationItemAdditionId.from("quotation-item-addition-1"),
@@ -81,7 +73,7 @@ class QuotationItemAdditionServiceSpec extends Specification {
       )
     )
     def quotation = quotationService.get(quotationId)
-    def item = quotationItemService.get(QuotationItemId.from("quotation-item-1"))
+    def item = quotationItemService.get(quotationItemId)
 
     then:
 

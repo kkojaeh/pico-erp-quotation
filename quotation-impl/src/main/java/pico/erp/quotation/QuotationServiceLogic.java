@@ -1,5 +1,9 @@
 package pico.erp.quotation;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,6 +42,7 @@ public class QuotationServiceLogic implements QuotationService {
 
   @Autowired
   private QuotationMapper mapper;
+
 
   @Override
   public void cancel(CancelRequest request) {
@@ -136,6 +141,26 @@ public class QuotationServiceLogic implements QuotationService {
     val response = quotation.apply(mapper.map(request));
     quotationRepository.update(quotation);
     eventPublisher.publishEvents(response.getEvents());
+  }
+
+  public void verify(VerifyRequest request) {
+    val aggregator = quotationRepository.findAggregatorBy(request.getId()).get();
+    if (aggregator.isUpdatable()) {
+      val response = aggregator.apply(new QuotationMessages.VerifyRequest());
+      quotationRepository.update(aggregator);
+      eventPublisher.publishEvents(response.getEvents());
+    }
+  }
+
+
+  @Getter
+  @Builder
+  public static class VerifyRequest {
+
+    @Valid
+    @NotNull
+    QuotationId id;
+
   }
 
 }

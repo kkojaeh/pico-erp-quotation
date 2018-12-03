@@ -1,6 +1,5 @@
 package pico.erp.quotation.item;
 
-import java.util.stream.Collectors;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -8,17 +7,12 @@ import org.springframework.context.event.EventListener;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import pico.erp.bom.BomEvents;
 import pico.erp.bom.BomEvents.DeterminedEvent;
-import pico.erp.bom.BomEvents.EstimatedUnitCostChangedEvent;
-import pico.erp.bom.BomEvents.NextRevisionCreatedEvent;
 import pico.erp.bom.BomId;
 import pico.erp.bom.BomService;
 import pico.erp.quotation.QuotationEvents;
-import pico.erp.quotation.QuotationMessages;
-import pico.erp.quotation.QuotationRepository;
-import pico.erp.quotation.item.QuotationItemMessages.ApplyItemAdditionRequest;
-import pico.erp.quotation.item.addition.QuotationItemAdditionRepository;
-import pico.erp.shared.event.EventPublisher;
+import pico.erp.quotation.QuotationServiceLogic;
 
 @SuppressWarnings("unused")
 @Component
@@ -28,16 +22,10 @@ public class QuotationItemEventListener {
   private static final String LISTENER_NAME = "listener.quotation-item-event-listener";
 
   @Autowired
-  private QuotationRepository quotationRepository;
+  private QuotationItemServiceLogic quotationItemService;
 
   @Autowired
-  private QuotationItemRepository quotationItemRepository;
-
-  @Autowired
-  private QuotationItemAdditionRepository quotationItemAdditionRepository;
-
-  @Autowired
-  private EventPublisher eventPublisher;
+  private QuotationServiceLogic quotationService;
 
   @Lazy
   @Autowired
@@ -45,37 +33,21 @@ public class QuotationItemEventListener {
 
 
   @EventListener
-  @JmsListener(destination = LISTENER_NAME + "." + DeterminedEvent.CHANNEL)
+  @JmsListener(destination = LISTENER_NAME + "." + BomEvents.DeterminedEvent.CHANNEL)
   public void onBomDetermined(DeterminedEvent event) {
     verifyQuotationBy(event.getBomId());
   }
 
   @EventListener
-  @JmsListener(destination = LISTENER_NAME + "." + EstimatedUnitCostChangedEvent.CHANNEL)
-  public void onBomEstimatedUnitCostChanged(EstimatedUnitCostChangedEvent event) {
-    val bom = bomService.get(event.getBomId());
-    quotationItemRepository.findAllBy(bom.getItemId())
-      .forEach(item -> {
-        if (item.getQuotation().canModify()) {
-          val response = item.apply(new QuotationItemMessages.VerifyRequest());
-          quotationItemRepository.update(item);
-          eventPublisher.publishEvents(response.getEvents());
-        }
-      });
+  @JmsListener(destination = LISTENER_NAME + "." + BomEvents.EstimatedUnitCostChangedEvent.CHANNEL)
+  public void onBomEstimatedUnitCostChanged(BomEvents.EstimatedUnitCostChangedEvent event) {
+    verifyQuotationBy(event.getBomId());
   }
 
   @EventListener
-  @JmsListener(destination = LISTENER_NAME + "." + QuotationEvents.NextDraftedEvent.CHANNEL)
-  public void onQuotationNextDrafted(QuotationEvents.NextDraftedEvent event) {
-    val quotation = quotationRepository.findBy(event.getQuotationId())
-      .orElseThrow(pico.erp.quotation.QuotationExceptions.NotFoundException::new);
-
-    quotationItemRepository.findAllBy(quotation.getPreviousId())
-      .forEach(item -> {
-        val response = item.apply(new QuotationItemMessages.NextDraftRequest(quotation));
-        quotationItemRepository.create(response.getNextDrafted());
-        eventPublisher.publishEvents(response.getEvents());
-      });
+  @JmsListener(destination = LISTENER_NAME + "." + BomEvents.NextRevisionCreatedEvent.CHANNEL)
+  public void onBomNextRevisionCreated(BomEvents.NextRevisionCreatedEvent event) {
+    verifyQuotationBy(event.getBomId());
   }
 
   @EventListener
@@ -83,35 +55,33 @@ public class QuotationItemEventListener {
     + QuotationEvents.AdditionChangedEvent.CHANNEL)
   public void onQuotationAdditionChanged(
     QuotationEvents.AdditionChangedEvent event) {
-    val itemAdditions = quotationItemAdditionRepository.findAllBy(event.getQuotationId())
-      .collect(Collectors.toList());
-    quotationItemRepository.findAllBy(event.getQuotationId())
-      .forEach(item -> {
-        val response = item
-          .apply(new ApplyItemAdditionRequest(itemAdditions));
-        quotationItemRepository.update(item);
-        eventPublisher.publishEvents(response.getEvents());
-      });
+    quotationItemService.applyItemAdditions(
+      QuotationItemServiceLogic.ApplyItemAdditionsRequest.builder()
+        .quotationId(event.getQuotationId())
+        .build()
+    );
   }
 
   @EventListener
-  @JmsListener(destination = LISTENER_NAME + "." + NextRevisionCreatedEvent.CHANNEL)
-  public void onBomNextRevisionCreated(NextRevisionCreatedEvent event) {
-    verifyQuotationBy(event.getBomId());
+  @JmsListener(destination = LISTENER_NAME + "." + QuotationEvents.NextDraftedEvent.CHANNEL)
+  public void onQuotationNextDrafted(QuotationEvents.NextDraftedEvent event) {
+    quotationItemService.nextDraft(
+      QuotationItemServiceLogic.NextDraftRequest.builder()
+        .quotationId(event.getQuotationId())
+        .build()
+    );
   }
 
   private void verifyQuotationBy(BomId id) {
     val bom = bomService.get(id);
 
-    quotationItemRepository.findAllBy(bom.getItemId())
+    quotationItemService.getAll(bom.getItemId())
       .forEach(item -> {
-        if (item.getQuotation().canModify()) {
-          val aggregator = quotationRepository.findAggregatorBy(item.getQuotation().getId())
-            .orElseThrow(pico.erp.quotation.QuotationExceptions.NotFoundException::new);
-          val response = aggregator.apply(new QuotationMessages.VerifyRequest());
-          quotationRepository.update(aggregator);
-          eventPublisher.publishEvents(response.getEvents());
-        }
+        quotationService.verify(
+          QuotationServiceLogic.VerifyRequest.builder()
+            .id(item.getQuotationId())
+            .build()
+        );
       });
   }
 

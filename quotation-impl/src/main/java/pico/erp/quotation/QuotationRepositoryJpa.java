@@ -1,8 +1,6 @@
 package pico.erp.quotation;
 
-import java.time.LocalTime;
 import java.time.OffsetDateTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.EnumSet;
 import java.util.Optional;
 import java.util.Set;
@@ -19,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 interface QuotationEntityRepository extends CrudRepository<QuotationEntity, QuotationId> {
 
   @Query("SELECT COUNT(q) FROM Quotation q WHERE q.createdDate >= :begin AND q.createdDate <= :end")
-  long countByCreatedDateBetween(@Param("begin") OffsetDateTime begin,
+  long countCreatedBetween(@Param("begin") OffsetDateTime begin,
     @Param("end") OffsetDateTime end);
 
   @Query("SELECT q FROM Quotation q WHERE q.expirationDate < :fixedDate AND q.status in (:statuses)")
@@ -39,14 +37,9 @@ public class QuotationRepositoryJpa implements QuotationRepository {
   @Autowired
   private QuotationMapper mapper;
 
-
   @Override
-  public long countByCreatedThisMonth() {
-    OffsetDateTime begin = OffsetDateTime.now().with(TemporalAdjusters.firstDayOfMonth())
-      .with(LocalTime.MIN);
-    OffsetDateTime end = OffsetDateTime.now().with(TemporalAdjusters.lastDayOfMonth())
-      .with(LocalTime.MAX);
-    return repository.countByCreatedDateBetween(begin, end);
+  public long countCreatedBetween(OffsetDateTime begin, OffsetDateTime end) {
+    return repository.countCreatedBetween(begin, end);
   }
 
   @Override

@@ -2,12 +2,18 @@ package pico.erp.quotation.item.addition;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import pico.erp.quotation.QuotationExceptions.NotFoundException;
 import pico.erp.quotation.QuotationId;
+import pico.erp.quotation.QuotationRepository;
 import pico.erp.quotation.item.addition.QuotationItemAdditionRequests.CreateRequest;
 import pico.erp.quotation.item.addition.QuotationItemAdditionRequests.DeleteRequest;
 import pico.erp.quotation.item.addition.QuotationItemAdditionRequests.UpdateRequest;
@@ -26,6 +32,9 @@ public class QuotationItemAdditionServiceLogic implements QuotationItemAdditionS
 
   @Autowired
   private QuotationItemAdditionMapper mapper;
+
+  @Autowired
+  private QuotationRepository quotationRepository;
 
   @Autowired
   private QuotationItemAdditionRepository quotationItemAdditionRepository;
@@ -78,5 +87,28 @@ public class QuotationItemAdditionServiceLogic implements QuotationItemAdditionS
     val response = itemAddition.apply(mapper.map(request));
     quotationItemAdditionRepository.update(itemAddition);
     eventPublisher.publishEvents(response.getEvents());
+  }
+
+  public void nextDraft(NextDraftRequest request) {
+    val quotation = quotationRepository.findBy(request.getQuotationId())
+      .orElseThrow(NotFoundException::new);
+
+    quotationItemAdditionRepository.findAllBy(quotation.getPreviousId())
+      .forEach(item -> {
+        val response = item
+          .apply(new QuotationItemAdditionMessages.NextDraftRequest(quotation));
+        quotationItemAdditionRepository.create(response.getNextDrafted());
+        eventPublisher.publishEvents(response.getEvents());
+      });
+  }
+
+  @Getter
+  @Builder
+  public static class NextDraftRequest {
+
+    @Valid
+    @NotNull
+    QuotationId quotationId;
+
   }
 }

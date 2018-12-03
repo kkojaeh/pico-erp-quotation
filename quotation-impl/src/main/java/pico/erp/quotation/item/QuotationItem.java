@@ -102,7 +102,7 @@ public class QuotationItem {
 
   public QuotationItemMessages.CreateResponse apply(
     QuotationItemMessages.CreateRequest request) {
-    if (!request.getQuotation().canModify()) {
+    if (!request.getQuotation().isUpdatable()) {
       throw new CannotModifyException();
     }
     this.id = request.getId();
@@ -124,7 +124,7 @@ public class QuotationItem {
 
   public QuotationItemMessages.UpdateResponse apply(
     QuotationItemMessages.UpdateRequest request) {
-    if (!this.quotation.canModify()) {
+    if (!this.quotation.isUpdatable()) {
       throw new CannotModifyException();
     }
     this.description = request.getDescription();
@@ -143,7 +143,7 @@ public class QuotationItem {
 
   public QuotationItemMessages.DeleteResponse apply(
     QuotationItemMessages.DeleteRequest request) {
-    if (!this.quotation.canModify()) {
+    if (!this.quotation.isUpdatable()) {
       throw new CannotModifyException();
     }
     return new QuotationItemMessages.DeleteResponse(
@@ -164,7 +164,7 @@ public class QuotationItem {
 
   public ApplyItemAdditionResponse apply(
     ApplyItemAdditionRequest request) {
-    if (!this.quotation.canModify()) {
+    if (!this.quotation.isUpdatable()) {
       throw new CannotModifyException();
     }
     val sumOfAdditionRate = request.getItemAdditions().stream()
@@ -181,7 +181,7 @@ public class QuotationItem {
 
   public QuotationItemMessages.VerifyResponse apply(
     QuotationItemMessages.VerifyRequest request) {
-    if (!this.quotation.canModify()) {
+    if (!this.quotation.isUpdatable()) {
       throw new CannotModifyException();
     }
     applyUnitPrices();
@@ -195,7 +195,7 @@ public class QuotationItem {
 
   public FixUnitPriceResponse apply(
     FixUnitPriceRequest request) {
-    if (!this.quotation.canModify()) {
+    if (!this.quotation.isUpdatable()) {
       throw new CannotModifyException();
     }
     unitPriceManuallyFixed = true;

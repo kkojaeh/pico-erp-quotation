@@ -245,7 +245,7 @@ public class Quotation {
     );
   }
 
-  public boolean canModify() {
+  public boolean isUpdatable() {
     return status == QuotationStatusKind.DRAFT || status == QuotationStatusKind.IN_NEGOTIATION
       || status == QuotationStatusKind.PREPARED;
   }

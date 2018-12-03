@@ -17,7 +17,6 @@ import pico.erp.project.ProjectId;
 import pico.erp.project.ProjectService;
 import pico.erp.quotation.QuotationExceptions.NotFoundException;
 import pico.erp.quotation.addition.QuotationAdditionRepository;
-import pico.erp.quotation.code.QuotationCodeGenerator;
 import pico.erp.quotation.item.QuotationItemRepository;
 import pico.erp.quotation.item.addition.QuotationItemAdditionRepository;
 import pico.erp.shared.data.Auditor;
@@ -214,8 +213,7 @@ public abstract class QuotationMapper {
   @Mappings({
     @Mapping(target = "projectId", source = "project.id"),
     @Mapping(target = "customerId", source = "customer.id"),
-    @Mapping(target = "managerId", source = "manager.id"),
-    @Mapping(target = "modifiable", expression = "java(quotation.canModify())")
+    @Mapping(target = "managerId", source = "manager.id")
   })
   public abstract QuotationData map(Quotation quotation);
 

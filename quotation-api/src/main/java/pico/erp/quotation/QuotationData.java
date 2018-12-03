@@ -80,7 +80,7 @@ public class QuotationData {
 
   boolean sheetPrintable;
 
-  boolean modifiable;
+  boolean updatable;
 
   boolean nextDraftable;
 
