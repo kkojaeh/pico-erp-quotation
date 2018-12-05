@@ -25,15 +25,9 @@ public class QuotationView {
 
   ProjectId projectId;
 
-  String projectName;
-
   CompanyId customerId;
 
-  String customerName;
-
   UserId managerId;
-
-  String managerName;
 
   OffsetDateTime committedDate;
 

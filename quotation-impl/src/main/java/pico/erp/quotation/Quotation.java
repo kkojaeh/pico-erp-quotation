@@ -167,7 +167,7 @@ public class Quotation {
     protectedDescription = request.getProtectedDescription();
     publicDescription = request.getPublicDescription();
     attachmentId = request.getAttachmentId();
-    code = request.getQuotationCodeGenerator().generate(this);
+    code = request.getCodeGenerator().generate(this);
     return new DraftResponse(
       Arrays.asList(new QuotationEvents.DraftedEvent(this.id))
     );
@@ -187,7 +187,7 @@ public class Quotation {
     draft.committedDate = null;
     draft.committable = true;
     draft.preparable = false;
-    draft.code = request.getQuotationCodeGenerator().generate(draft);
+    draft.code = request.getCodeGenerator().generate(draft);
 
     status = QuotationStatusKind.DESTROYED;
     return new NextDraftResponse(draft, Arrays.asList(

@@ -71,7 +71,7 @@ public interface QuotationMessages {
     AttachmentId attachmentId;
 
     @NotNull
-    QuotationCodeGenerator quotationCodeGenerator;
+    QuotationCodeGenerator codeGenerator;
 
   }
 
@@ -83,7 +83,7 @@ public interface QuotationMessages {
     QuotationId nextId;
 
     @NotNull
-    QuotationCodeGenerator quotationCodeGenerator;
+    QuotationCodeGenerator codeGenerator;
 
   }
 

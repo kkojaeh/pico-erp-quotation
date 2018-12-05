@@ -81,16 +81,10 @@ public class QuotationEntity implements Serializable {
   })
   ProjectId projectId;
 
-  @Column(length = TypeDefinitions.NAME_LENGTH)
-  String projectName;
-
   @AttributeOverrides({
     @AttributeOverride(name = "value", column = @Column(name = "CUSTOMER_ID", length = TypeDefinitions.ID_LENGTH))
   })
   CompanyId customerId;
-
-  @Column(length = TypeDefinitions.NAME_LENGTH)
-  String customerName;
 
   @Column(length = TypeDefinitions.NAME_LENGTH)
   String name;
@@ -103,9 +97,6 @@ public class QuotationEntity implements Serializable {
     @AttributeOverride(name = "value", column = @Column(name = "MANAGER_ID", length = TypeDefinitions.ID_LENGTH))
   })
   UserId managerId;
-
-  @Column(length = TypeDefinitions.NAME_LENGTH)
-  String managerName;
 
   @Column
   OffsetDateTime committedDate;
@@ -163,24 +154,6 @@ public class QuotationEntity implements Serializable {
 
   @LastModifiedDate
   OffsetDateTime lastModifiedDate;
-
-  /*@Builder.Default
-  @OneToMany(mappedBy = "quotation")
-  //@JoinColumn(name = "QUOTATION_ID")
-  @OrderBy("createdDate DESC")
-  List<QuotationItemAdditionEntity> itemAdditions = new LinkedList<>();
-
-  @Builder.Default
-  @OneToMany(mappedBy = "quotation")
-  //@JoinColumn(name = "QUOTATION_ID")
-  @OrderBy("createdDate DESC")
-  List<QuotationAdditionEntity> additions = new LinkedList<>();
-
-  @Builder.Default
-  @OneToMany(mappedBy = "quotation")
-  //@JoinColumn(name = "QUOTATION_ID")
-  @OrderBy("createdDate DESC")
-  List<QuotationItemEntity> items = new LinkedList<>();*/
 
   @Embedded
   @AttributeOverrides({

@@ -4,6 +4,7 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -60,8 +61,8 @@ public class QuotationQueryJpa implements QuotationQuery {
     val select = new QExtendedLabeledValue(
       quotation.id.value.as("value"),
       quotation.name.as("label"),
-      quotation.customerName.as("subLabel"),
-      quotation.managerName.as("stamp")
+      Expressions.as(Expressions.nullExpression(), "subLabel"),
+      Expressions.as(Expressions.nullExpression(), "stamp")
     );
     query.select(select);
     query.from(quotation);
@@ -81,11 +82,8 @@ public class QuotationQueryJpa implements QuotationQuery {
       quotation.name,
       quotation.revision,
       quotation.projectId,
-      quotation.projectName,
       quotation.customerId,
-      quotation.customerName,
       quotation.managerId,
-      quotation.managerName,
       quotation.committedDate,
       quotation.status,
       quotation.createdBy,

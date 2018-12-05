@@ -132,7 +132,7 @@ public abstract class QuotationMapper {
   public abstract QuotationMessages.DeleteRequest map(QuotationRequests.DeleteRequest request);
 
   @Mappings({
-    @Mapping(target = "quotationCodeGenerator", expression = "java(quotationCodeGenerator)")
+    @Mapping(target = "codeGenerator", expression = "java(quotationCodeGenerator)")
   })
   public abstract QuotationMessages.NextDraftRequest map(
     QuotationRequests.NextDraftRequest request);
@@ -142,11 +142,8 @@ public abstract class QuotationMapper {
 
   @Mappings({
     @Mapping(target = "projectId", source = "project.id"),
-    @Mapping(target = "projectName", source = "project.name"),
     @Mapping(target = "customerId", source = "customer.id"),
-    @Mapping(target = "customerName", source = "customer.name"),
     @Mapping(target = "managerId", source = "manager.id"),
-    @Mapping(target = "managerName", source = "manager.name"),
     @Mapping(target = "createdBy", ignore = true),
     @Mapping(target = "createdDate", ignore = true),
     @Mapping(target = "lastModifiedBy", ignore = true),
@@ -199,7 +196,7 @@ public abstract class QuotationMapper {
     @Mapping(target = "project", source = "projectId"),
     @Mapping(target = "customer", source = "customerId"),
     @Mapping(target = "manager", source = "managerId"),
-    @Mapping(target = "quotationCodeGenerator", expression = "java(quotationCodeGenerator)")
+    @Mapping(target = "codeGenerator", expression = "java(quotationCodeGenerator)")
   })
   public abstract QuotationMessages.DraftRequest map(QuotationRequests.DraftRequest request);
 
