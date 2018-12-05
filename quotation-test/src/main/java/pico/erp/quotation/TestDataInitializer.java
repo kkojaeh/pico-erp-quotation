@@ -49,10 +49,7 @@ public class TestDataInitializer implements ApplicationInitializer {
     dataProperties.quotationItems.stream().forEach(quotationItemService::create);
     dataProperties.quotationItemAdditions.stream().forEach(quotationItemAdditionService::create);
     dataProperties.quotationAdditions.stream().forEach(quotationAdditionService::create);
-    // 품목 부가비 등의 처리가 이벤트로 처리 되기 때문에 처리전 기다리도록 함
-    //TimeUnit.SECONDS.sleep(1l);
     dataProperties.preparedQuotations.forEach(quotationService::prepare);
-    //TimeUnit.SECONDS.sleep(1l);
     dataProperties.committedQuotations.forEach(quotationService::commit);
   }
 
