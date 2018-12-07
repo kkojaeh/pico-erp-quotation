@@ -9,18 +9,6 @@ dependencies {
 
   compile project(':quotation-impl')
 
-  testCompileOnly("com.github.kkojaeh.pico-erp-project:project-api:${projectVersion}")
-
-  testCompileOnly("com.github.kkojaeh.pico-erp-bom:bom-api:${bomVersion}")
-
-  testCompileOnly("com.github.kkojaeh.pico-erp-company:company-api:${companyVersion}")
-
-  testCompileOnly("com.github.kkojaeh.pico-erp-comment:comment-api:${commentVersion}")
-
-  testCompileOnly("com.github.kkojaeh.pico-erp-attachment:attachment-api:${attachmentVersion}")
-
-  testCompileOnly("com.github.kkojaeh.pico-erp-process:process-api:${processVersion}")
-
   testRuntimeOnly("com.github.kkojaeh.pico-erp-audit:audit-test:${auditVersion}")
 
   testRuntimeOnly("com.github.kkojaeh.pico-erp-item:item-test:${itemVersion}")

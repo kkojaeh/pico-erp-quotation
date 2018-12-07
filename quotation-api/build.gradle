@@ -9,16 +9,16 @@ dependencies {
 
   compile("com.github.kkojaeh.pico-erp-shared:shared-api:${sharedVersion}")
 
-  compileOnly("com.github.kkojaeh.pico-erp-project:project-api:${projectVersion}")
+  compile("com.github.kkojaeh.pico-erp-project:project-api:${projectVersion}")
 
-  compileOnly("com.github.kkojaeh.pico-erp-bom:bom-api:${bomVersion}")
+  compile("com.github.kkojaeh.pico-erp-bom:bom-api:${bomVersion}")
 
-  compileOnly("com.github.kkojaeh.pico-erp-company:company-api:${companyVersion}")
+  compile("com.github.kkojaeh.pico-erp-company:company-api:${companyVersion}")
 
-  compileOnly("com.github.kkojaeh.pico-erp-comment:comment-api:${commentVersion}")
+  compile("com.github.kkojaeh.pico-erp-comment:comment-api:${commentVersion}")
 
-  compileOnly("com.github.kkojaeh.pico-erp-attachment:attachment-api:${attachmentVersion}")
+  compile("com.github.kkojaeh.pico-erp-attachment:attachment-api:${attachmentVersion}")
 
-  compileOnly("com.github.kkojaeh.pico-erp-process:process-api:${processVersion}")
+  compile("com.github.kkojaeh.pico-erp-process:process-api:${processVersion}")
 
 }
