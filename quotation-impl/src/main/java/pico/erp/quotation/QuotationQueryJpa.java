@@ -61,7 +61,7 @@ public class QuotationQueryJpa implements QuotationQuery {
     val select = new QExtendedLabeledValue(
       quotation.id.value.as("value"),
       quotation.name.as("label"),
-      Expressions.as(Expressions.nullExpression(), "subLabel"),
+      quotation.code.value.as("subLabel"),
       Expressions.as(Expressions.nullExpression(), "stamp")
     );
     query.select(select);
@@ -79,6 +79,7 @@ public class QuotationQueryJpa implements QuotationQuery {
     val query = new JPAQuery<QuotationView>(entityManager);
     val select = Projections.bean(QuotationView.class,
       quotation.id,
+      quotation.code,
       quotation.name,
       quotation.revision,
       quotation.projectId,
@@ -101,6 +102,11 @@ public class QuotationQueryJpa implements QuotationQuery {
       builder.and(
         quotation.name
           .likeIgnoreCase(queryDslJpaSupport.toLikeKeyword("%", filter.getName(), "%")));
+    }
+    if (!isEmpty(filter.getCode())) {
+      builder.and(
+        quotation.code.value
+          .likeIgnoreCase(queryDslJpaSupport.toLikeKeyword("%", filter.getCode(), "%")));
     }
     if (filter.getProjectId() != null) {
       builder.and(quotation.projectId.eq(filter.getProjectId()));

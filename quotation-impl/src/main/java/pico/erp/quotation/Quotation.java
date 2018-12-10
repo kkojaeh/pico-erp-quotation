@@ -187,7 +187,7 @@ public class Quotation {
     draft.committedDate = null;
     draft.committable = true;
     draft.preparable = false;
-    draft.code = request.getCodeGenerator().generate(draft);
+    draft.code = code;
 
     status = QuotationStatusKind.DESTROYED;
     return new NextDraftResponse(draft, Arrays.asList(

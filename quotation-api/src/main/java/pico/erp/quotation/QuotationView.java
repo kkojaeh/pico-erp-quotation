@@ -19,6 +19,8 @@ public class QuotationView {
 
   QuotationId id;
 
+  QuotationCode code;
+
   int revision;
 
   String name;
@@ -48,6 +50,8 @@ public class QuotationView {
   public static class Filter {
 
     String name;
+
+    String code;
 
     ProjectId projectId;
 

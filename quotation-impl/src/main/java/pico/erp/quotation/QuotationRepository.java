@@ -17,6 +17,8 @@ public interface QuotationRepository {
 
   boolean exists(@NotNull QuotationId id);
 
+  boolean exists(@NotNull QuotationCode code);
+
   Stream<Quotation> findAllExpireCandidateBeforeThan(@NotNull OffsetDateTime fixedDate);
 
   Optional<Quotation> findBy(@NotNull QuotationId id);

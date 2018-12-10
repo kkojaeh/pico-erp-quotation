@@ -86,6 +86,12 @@ public class QuotationServiceLogic implements QuotationService {
   public QuotationData draft(DraftRequest request) {
     val quotation = new Quotation();
     val response = quotation.apply(mapper.map(request));
+    if (quotationRepository.exists(quotation.getId())) {
+      throw new QuotationExceptions.AlreadyExistsException();
+    }
+    if (quotationRepository.exists(quotation.getCode())) {
+      throw new QuotationExceptions.CodeAlreadyExistsException();
+    }
     val created = quotationRepository.create(quotation);
     eventPublisher.publishEvents(response.getEvents());
     return mapper.map(created);
@@ -117,8 +123,10 @@ public class QuotationServiceLogic implements QuotationService {
   public QuotationData nextDraft(NextDraftRequest request) {
     val quotation = quotationRepository.findBy(request.getId())
       .orElseThrow(NotFoundException::new);
+    if (quotationRepository.exists(request.getNextId())) {
+      throw new QuotationExceptions.AlreadyExistsException();
+    }
     val response = quotation.apply(mapper.map(request));
-
     val nextDrafted = quotationRepository.create(response.getNextDrafted());
     quotationRepository.update(quotation);
 

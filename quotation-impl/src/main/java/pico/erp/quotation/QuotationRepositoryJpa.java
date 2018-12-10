@@ -25,6 +25,9 @@ interface QuotationEntityRepository extends CrudRepository<QuotationEntity, Quot
     @Param("fixedDate") OffsetDateTime fixedDate,
     @Param("statuses") Set<QuotationStatusKind> statuses);
 
+  @Query("SELECT CASE WHEN COUNT(q) > 0 THEN true ELSE false END FROM Quotation q WHERE q.code = :code")
+  boolean exists(@Param("code") QuotationCode code);
+
 }
 
 @Repository
@@ -57,6 +60,11 @@ public class QuotationRepositoryJpa implements QuotationRepository {
   @Override
   public boolean exists(QuotationId id) {
     return repository.exists(id);
+  }
+
+  @Override
+  public boolean exists(QuotationCode code) {
+    return repository.exists(code);
   }
 
   @Override

@@ -82,9 +82,6 @@ public interface QuotationMessages {
     @NotNull
     QuotationId nextId;
 
-    @NotNull
-    QuotationCodeGenerator codeGenerator;
-
   }
 
   @Data

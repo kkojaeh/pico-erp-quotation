@@ -32,6 +32,8 @@ class QuotationServiceSpec extends Specification {
 
   def id = QuotationId.from("test")
 
+  def nextId = QuotationId.from("test-next")
+
   def unknownId = QuotationId.from("unknown")
 
   def projectId = ProjectId.from("sample-project1")
@@ -99,6 +101,27 @@ class QuotationServiceSpec extends Specification {
 
     then:
     thrown(QuotationExceptions.NotFoundException)
+  }
+
+  def "재견적 - 재견적"() {
+    when:
+
+    quotationService.prepare(new QuotationRequests.PrepareRequest(id: id))
+    quotationService.commit(new QuotationRequests.CommitRequest(id: id))
+    def nextDrafted = quotationService.nextDraft(
+      new QuotationRequests.NextDraftRequest(
+        id: id,
+        nextId: nextId
+      )
+    )
+    def q = quotationService.get(id)
+
+    then:
+    q.status == QuotationStatusKind.DESTROYED
+    nextDrafted.id == nextId
+    nextDrafted.status == QuotationStatusKind.IN_NEGOTIATION
+    nextDrafted.code == q.code
+    nextDrafted.name == q.name
   }
 
 }

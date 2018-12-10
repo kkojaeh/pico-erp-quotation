@@ -132,7 +132,6 @@ public abstract class QuotationMapper {
   public abstract QuotationMessages.DeleteRequest map(QuotationRequests.DeleteRequest request);
 
   @Mappings({
-    @Mapping(target = "codeGenerator", expression = "java(quotationCodeGenerator)")
   })
   public abstract QuotationMessages.NextDraftRequest map(
     QuotationRequests.NextDraftRequest request);
