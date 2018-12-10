@@ -22,7 +22,9 @@ public class QuotationCodeGeneratorImpl implements QuotationCodeGenerator {
       .with(LocalTime.MAX);
     long count = quotationRepository.countCreatedBetween(begin, end);
     String value = String
-      .format("%d%s-%04d", now.getYear() % 100, Integer.toString(now.getMonthValue(), 16), count);
+      .format("%d%s-%04d", now.getYear() % 100, Integer.toString(now.getMonthValue(), 16),
+        count + 1)
+      .toUpperCase();
     return QuotationCode.from(value);
   }
 
