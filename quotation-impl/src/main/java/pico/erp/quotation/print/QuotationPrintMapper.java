@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import lombok.val;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Lazy;
 import pico.erp.bom.BomData;
 import pico.erp.bom.BomHierarchyData;
 import pico.erp.bom.BomService;
+import pico.erp.bom.process.BomProcessService;
 import pico.erp.company.CompanyService;
 import pico.erp.item.ItemData;
 import pico.erp.item.ItemId;
@@ -37,6 +39,10 @@ public abstract class QuotationPrintMapper {
   @Lazy
   @Autowired
   private BomService bomService;
+
+  @Lazy
+  @Autowired
+  private BomProcessService bomProcessService;
 
   @Lazy
   @Autowired
@@ -83,15 +89,30 @@ public abstract class QuotationPrintMapper {
   protected List<QuotationPrintBomData> map(BomHierarchyData data) {
     final List<QuotationPrintBomData> boms = new LinkedList<>();
     data.visitInOrder((bom, parents) -> {
-      boms.add(
-        QuotationPrintBomData.builder()
-          .bom(bom)
-          .level(parents.size())
-          .item(map(bom.getItemId()))
-          .process(map(bom.getProcessId()))
-          .itemSpec(map(bom.getItemSpecId()))
-          .build()
-      );
+      val processes = bomProcessService.getAll(bom.getId());
+      if (processes.isEmpty()) {
+        boms.add(
+          QuotationPrintBomData.builder()
+            .bom(bom)
+            .level(parents.size())
+            .item(map(bom.getItemId()))
+            .process(null)
+            .itemSpec(map(bom.getItemSpecId()))
+            .build()
+        );
+      } else {
+        processes.forEach(process -> {
+          boms.add(
+            QuotationPrintBomData.builder()
+              .bom(bom)
+              .level(parents.size())
+              .item(map(bom.getItemId()))
+              .process(map(process.getProcessId()))
+              .itemSpec(map(bom.getItemSpecId()))
+              .build()
+          );
+        });
+      }
     });
     return boms;
   }

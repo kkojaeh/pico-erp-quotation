@@ -8,6 +8,7 @@ import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pico.erp.quotation.QuotationId;
 import pico.erp.shared.TypeDefinitions;
@@ -81,6 +82,26 @@ public interface QuotationAdditionRequests {
     @Valid
     @NotNull
     QuotationAdditionId id;
+
+  }
+
+  @Getter
+  @Builder
+  class NextDraftRequest {
+
+    @Valid
+    @NotNull
+    QuotationId quotationId;
+
+  }
+
+  @Getter
+  @Builder
+  class GenerateByProcessPreparationRequest {
+
+    @Valid
+    @NotNull
+    QuotationId quotationId;
 
   }
 }

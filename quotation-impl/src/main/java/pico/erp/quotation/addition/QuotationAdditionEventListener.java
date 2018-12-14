@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import pico.erp.bom.BomService;
 import pico.erp.quotation.QuotationEvents;
+import pico.erp.quotation.addition.QuotationAdditionRequests.GenerateByProcessPreparationRequest;
 
 @SuppressWarnings("unused")
 @Component
@@ -21,13 +22,13 @@ public class QuotationAdditionEventListener {
   private BomService bomService;
 
   @Autowired
-  private QuotationAdditionServiceLogic quotationAdditionService;
+  private QuotationAdditionService quotationAdditionService;
 
   @EventListener
   @JmsListener(destination = LISTENER_NAME + "." + QuotationEvents.NextDraftedEvent.CHANNEL)
   public void onQuotationNextDrafted(QuotationEvents.NextDraftedEvent event) {
     quotationAdditionService.nextDraft(
-      QuotationAdditionServiceLogic.NextDraftRequest.builder()
+      QuotationAdditionRequests.NextDraftRequest.builder()
         .quotationId(event.getQuotationId())
         .build()
     );
@@ -37,7 +38,7 @@ public class QuotationAdditionEventListener {
   @JmsListener(destination = LISTENER_NAME + "." + QuotationEvents.PreparedEvent.CHANNEL)
   public void onQuotationPrepared(QuotationEvents.PreparedEvent event) {
     quotationAdditionService.generate(
-      QuotationAdditionServiceLogic.GenerateRequest.builder()
+      GenerateByProcessPreparationRequest.builder()
         .quotationId(event.getQuotationId())
         .build()
     );

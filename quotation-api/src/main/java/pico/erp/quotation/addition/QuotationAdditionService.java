@@ -6,6 +6,8 @@ import javax.validation.constraints.NotNull;
 import pico.erp.quotation.QuotationId;
 import pico.erp.quotation.addition.QuotationAdditionRequests.CreateRequest;
 import pico.erp.quotation.addition.QuotationAdditionRequests.DeleteRequest;
+import pico.erp.quotation.addition.QuotationAdditionRequests.GenerateByProcessPreparationRequest;
+import pico.erp.quotation.addition.QuotationAdditionRequests.NextDraftRequest;
 import pico.erp.quotation.addition.QuotationAdditionRequests.UpdateRequest;
 
 public interface QuotationAdditionService {
@@ -16,9 +18,13 @@ public interface QuotationAdditionService {
 
   boolean exists(@NotNull QuotationAdditionId id);
 
+  void generate(GenerateByProcessPreparationRequest request);
+
   QuotationAdditionData get(@NotNull QuotationAdditionId id);
 
   List<QuotationAdditionData> getAll(QuotationId quotationId);
+
+  void nextDraft(NextDraftRequest request);
 
   void update(@Valid UpdateRequest request);
 
