@@ -9,8 +9,6 @@ dependencies {
 
   compile project(':impl')
 
-  compile("com.github.kkojaeh.pico-erp-shared:api:master-SNAPSHOT")
-
   testRuntimeOnly("com.github.kkojaeh.pico-erp-audit:test:${auditVersion}")
 
   testRuntimeOnly("com.github.kkojaeh.pico-erp-item:test:${itemVersion}")

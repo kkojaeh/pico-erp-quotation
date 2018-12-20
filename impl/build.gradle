@@ -10,8 +10,6 @@ dependencies {
 
   compile project(':api')
 
-  compile("com.github.kkojaeh.pico-erp-shared:api:master-SNAPSHOT")
-
   compile("com.github.kkojaeh.pico-erp-shared:impl:${sharedVersion}")
 
   
