@@ -7,4 +7,4 @@
 |      | |       ||       |  |   |  |   _   |  |   |  |   | |       || | |   |
 |____||_||_______||_______|  |___|  |__| |__|  |___|  |___| |_______||_|  |__|
 
-made by http://patorjk.com/software/taag/#p=display&f=Modular&t=QUOTATION
+${application.version} - made by http://patorjk.com/software/taag/#p=display&f=Modular&t=QUOTATION

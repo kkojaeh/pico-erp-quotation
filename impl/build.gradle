@@ -8,9 +8,11 @@ apply from: 'https://rawgit.com/kkojaeh/pico-erp-gradle/master/impl.gradle'
 
 dependencies {
 
-  compile project(':quotation-api')
+  compile project(':api')
 
-  compile("com.github.kkojaeh.pico-erp-shared:shared-impl:${sharedVersion}")
+  compile("com.github.kkojaeh.pico-erp-shared:api:master-SNAPSHOT")
+
+  compile("com.github.kkojaeh.pico-erp-shared:impl:${sharedVersion}")
 
   
 
