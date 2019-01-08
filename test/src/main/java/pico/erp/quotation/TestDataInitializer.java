@@ -2,6 +2,7 @@ package pico.erp.quotation;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,11 @@ public class TestDataInitializer implements ApplicationInitializer {
     dataProperties.quotationItemAdditions.stream().forEach(quotationItemAdditionService::create);
     dataProperties.quotationAdditions.stream().forEach(quotationAdditionService::create);
     dataProperties.preparedQuotations.forEach(quotationService::prepare);
+    try {
+      TimeUnit.MILLISECONDS.sleep(500L);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
     dataProperties.committedQuotations.forEach(quotationService::commit);
   }
 
