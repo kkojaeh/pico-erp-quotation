@@ -50,12 +50,9 @@ public class TestDataInitializer implements ApplicationInitializer {
     dataProperties.quotationItems.stream().forEach(quotationItemService::create);
     dataProperties.quotationItemAdditions.stream().forEach(quotationItemAdditionService::create);
     dataProperties.quotationAdditions.stream().forEach(quotationAdditionService::create);
+    TimeUnit.MILLISECONDS.sleep(500L);
     dataProperties.preparedQuotations.forEach(quotationService::prepare);
-    try {
-      TimeUnit.MILLISECONDS.sleep(500L);
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
-    }
+    TimeUnit.MILLISECONDS.sleep(500L);
     dataProperties.committedQuotations.forEach(quotationService::commit);
   }
 
