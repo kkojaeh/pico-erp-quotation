@@ -2,9 +2,6 @@ banner:
   location: classpath:quotation/banner.txt
 
 spring:
-  profiles:
-    include:
-      - test-cfg
   application:
     name: pico-quotation
   session:
