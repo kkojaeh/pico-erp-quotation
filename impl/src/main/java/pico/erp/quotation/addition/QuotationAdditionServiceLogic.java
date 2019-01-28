@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import pico.erp.bom.BomService;
-import pico.erp.bom.process.BomProcessService;
 import pico.erp.process.ProcessService;
 import pico.erp.process.preparation.ProcessPreparationService;
 import pico.erp.quotation.QuotationExceptions;
@@ -51,10 +50,6 @@ public class QuotationAdditionServiceLogic implements QuotationAdditionService {
   @Lazy
   @Autowired
   private BomService bomService;
-
-  @Lazy
-  @Autowired
-  private BomProcessService bomProcessService;
 
   @Lazy
   @Autowired
@@ -119,10 +114,8 @@ public class QuotationAdditionServiceLogic implements QuotationAdditionService {
       .forEach(item -> {
         val hierarchyBom = bomService.getHierarchy(item.getBom().getId());
         hierarchyBom.visitPostOrder((bom, parents) -> {
-          val bomId = bom.getId();
-          bomProcessService.getAll(bomId).forEach(bomProcess -> {
-            val processId = bomProcess.getProcessId();
-            val preparations = processPreparationService.getAll(processId);
+          processService.getAll(bom.getItemId()).forEach(process -> {
+            val preparations = processPreparationService.getAll(process.getId());
             preparations.forEach(preparation -> {
               val addition = new QuotationAddition();
               val response = addition.apply(

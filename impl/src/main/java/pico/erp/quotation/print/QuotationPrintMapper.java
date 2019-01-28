@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Lazy;
 import pico.erp.bom.BomData;
 import pico.erp.bom.BomHierarchyData;
 import pico.erp.bom.BomService;
-import pico.erp.bom.process.BomProcessService;
 import pico.erp.company.CompanyService;
 import pico.erp.item.ItemData;
 import pico.erp.item.ItemId;
@@ -39,10 +38,6 @@ public abstract class QuotationPrintMapper {
   @Lazy
   @Autowired
   private BomService bomService;
-
-  @Lazy
-  @Autowired
-  private BomProcessService bomProcessService;
 
   @Lazy
   @Autowired
@@ -89,7 +84,7 @@ public abstract class QuotationPrintMapper {
   protected List<QuotationPrintBomData> map(BomHierarchyData data) {
     final List<QuotationPrintBomData> boms = new LinkedList<>();
     data.visitInOrder((bom, parents) -> {
-      val processes = bomProcessService.getAll(bom.getId());
+      val processes = processService.getAll(bom.getItemId());
       if (processes.isEmpty()) {
         boms.add(
           QuotationPrintBomData.builder()
@@ -107,7 +102,7 @@ public abstract class QuotationPrintMapper {
               .bom(bom)
               .level(parents.size())
               .item(map(bom.getItemId()))
-              .process(map(process.getProcessId()))
+              .process(process)
               .itemSpec(map(bom.getItemSpecId()))
               .build()
           );
