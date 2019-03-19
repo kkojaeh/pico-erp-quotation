@@ -38,7 +38,8 @@ import pico.erp.user.UserId;
 
 @Entity(name = "Quotation")
 @Table(name = "QOT_QUOTATION", indexes = {
-  @Index(columnList = "STATUS")
+  @Index(columnList = "STATUS"),
+  @Index(columnList = "createdDate")
 })
 @Data
 @EqualsAndHashCode(of = "id")

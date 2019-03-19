@@ -21,11 +21,11 @@ public class QuotationCodeGeneratorImpl implements QuotationCodeGenerator {
     OffsetDateTime end = now.with(TemporalAdjusters.lastDayOfMonth())
       .with(LocalTime.MAX);
     long count = quotationRepository.countCreatedBetween(begin, end);
-    String value = String
-      .format("%d%s-%04d", now.getYear() % 100, Integer.toString(now.getMonthValue(), 16),
+    String code = String
+      .format("Q%03d%02d-%04d", now.getYear() % 100, now.getMonthValue(),
         count + 1)
       .toUpperCase();
-    return QuotationCode.from(value);
+    return QuotationCode.from(code);
   }
 
 }
