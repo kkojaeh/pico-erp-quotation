@@ -1,6 +1,6 @@
 package pico.erp.quotation;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -25,7 +25,7 @@ public interface QuotationRequests {
      * 지정 기준시간보다 예전 데이터를 삭제 테스트를 위해 @Past 를 사용하지 않는다
      */
     @NotNull
-    OffsetDateTime fixedDate;
+    LocalDateTime fixedDate;
 
   }
 

@@ -1,7 +1,7 @@
 package pico.erp.quotation;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -35,7 +35,7 @@ public class QuotationData {
 
   UserId managerId;
 
-  OffsetDateTime committedDate;
+  LocalDateTime committedDate;
 
   QuotationStatusKind status;
 
@@ -86,7 +86,7 @@ public class QuotationData {
 
   AttachmentId attachmentId;
 
-  OffsetDateTime expirationDate;
+  LocalDateTime expirationDate;
 
   boolean preparable;
 

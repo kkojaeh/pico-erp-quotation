@@ -1,6 +1,6 @@
 package pico.erp.quotation;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.function.Function;
 import pico.erp.shared.data.LocalizedNameable;
 
@@ -16,13 +16,13 @@ public enum QuotationExpiryPolicyKind implements LocalizedNameable {
 
   IN_YEAR(commitDate -> commitDate.plusYears(1));
 
-  private final Function<OffsetDateTime, OffsetDateTime> mapper;
+  private final Function<LocalDateTime, LocalDateTime> mapper;
 
-  QuotationExpiryPolicyKind(Function<OffsetDateTime, OffsetDateTime> mapper) {
+  QuotationExpiryPolicyKind(Function<LocalDateTime, LocalDateTime> mapper) {
     this.mapper = mapper;
   }
 
-  public OffsetDateTime resolveExpirationDate(OffsetDateTime commitDate) {
+  public LocalDateTime resolveExpirationDate(LocalDateTime commitDate) {
     return mapper.apply(commitDate);
   }
 

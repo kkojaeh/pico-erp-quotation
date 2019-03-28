@@ -43,12 +43,12 @@ public class QuotationItemAdditionRepositoryJpa implements QuotationItemAddition
 
   @Override
   public void deleteBy(QuotationItemAdditionId id) {
-    repository.delete(id);
+    repository.deleteById(id);
   }
 
   @Override
   public boolean exists(QuotationItemAdditionId id) {
-    return repository.exists(id);
+    return repository.existsById(id);
   }
 
   @Override
@@ -59,13 +59,13 @@ public class QuotationItemAdditionRepositoryJpa implements QuotationItemAddition
 
   @Override
   public Optional<QuotationItemAddition> findBy(QuotationItemAdditionId id) {
-    return Optional.ofNullable(repository.findOne(id))
+    return repository.findById(id)
       .map(mapper::jpa);
   }
 
   @Override
   public void update(QuotationItemAddition quotationAddition) {
-    val entity = repository.findOne(quotationAddition.getId());
+    val entity = repository.findById(quotationAddition.getId()).get();
     mapper.pass(mapper.jpa(quotationAddition), entity);
     repository.save(entity);
   }

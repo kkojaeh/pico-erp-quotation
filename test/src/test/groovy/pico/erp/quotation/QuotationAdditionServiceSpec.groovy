@@ -1,14 +1,18 @@
 package pico.erp.quotation
 
+import kkojaeh.spring.boot.component.SpringBootTestComponent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.Configuration
 import org.springframework.test.annotation.Rollback
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
+import pico.erp.bom.BomApplication
+import pico.erp.company.CompanyApplication
 import pico.erp.company.CompanyId
+import pico.erp.item.ItemApplication
 import pico.erp.item.ItemId
+import pico.erp.process.ProcessApplication
+import pico.erp.project.ProjectApplication
 import pico.erp.project.ProjectId
 import pico.erp.quotation.addition.QuotationAdditionId
 import pico.erp.quotation.addition.QuotationAdditionRequests
@@ -16,16 +20,16 @@ import pico.erp.quotation.addition.QuotationAdditionService
 import pico.erp.quotation.item.QuotationItemId
 import pico.erp.quotation.item.QuotationItemRequests
 import pico.erp.quotation.item.QuotationItemService
-import pico.erp.shared.IntegrationConfiguration
+import pico.erp.shared.TestParentApplication
+import pico.erp.user.UserApplication
 import pico.erp.user.UserId
 import spock.lang.Specification
 
-@SpringBootTest(classes = [IntegrationConfiguration])
+@SpringBootTest(classes = [QuotationApplication, TestConfig])
+@SpringBootTestComponent(parent = TestParentApplication, siblings = [ItemApplication, ProcessApplication, CompanyApplication, BomApplication, UserApplication, ProjectApplication])
 @Transactional
 @Rollback
 @ActiveProfiles("test")
-@Configuration
-@ComponentScan("pico.erp.config")
 class QuotationAdditionServiceSpec extends Specification {
 
   @Autowired

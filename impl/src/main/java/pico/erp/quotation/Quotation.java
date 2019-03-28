@@ -1,7 +1,7 @@
 package pico.erp.quotation;
 
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -13,7 +13,6 @@ import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import lombok.val;
 import pico.erp.attachment.AttachmentId;
-import pico.erp.audit.annotation.Audit;
 import pico.erp.comment.subject.CommentSubjectId;
 import pico.erp.company.CompanyData;
 import pico.erp.project.ProjectData;
@@ -48,7 +47,6 @@ import pico.erp.user.UserData;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = "id")
-@Audit(alias = "quotation")
 public class Quotation {
 
   QuotationId id;
@@ -73,11 +71,11 @@ public class Quotation {
 
   Auditor committer;
 
-  OffsetDateTime committedDate;
+  LocalDateTime committedDate;
 
   Auditor canceler;
 
-  OffsetDateTime canceledDate;
+  LocalDateTime canceledDate;
 
   QuotationStatusKind status;
 
@@ -87,7 +85,7 @@ public class Quotation {
 
   AttachmentId attachmentId;
 
-  OffsetDateTime expirationDate;
+  LocalDateTime expirationDate;
 
   boolean committable;
 
@@ -134,7 +132,7 @@ public class Quotation {
     }
     this.status = QuotationStatusKind.CANCELED;
     this.canceler = request.getCanceler();
-    this.canceledDate = OffsetDateTime.now();
+    this.canceledDate = LocalDateTime.now();
     return new CancelResponse(
       Arrays.asList(new QuotationEvents.CanceledEvent(this.id)));
   }
@@ -145,7 +143,7 @@ public class Quotation {
     }
     this.status = QuotationStatusKind.COMMITTED;
     this.committer = request.getCommitter();
-    this.committedDate = OffsetDateTime.now();
+    this.committedDate = LocalDateTime.now();
     this.expirationDate = expiryPolicy.resolveExpirationDate(this.committedDate);
     this.committable = false;
     this.preparable = false;

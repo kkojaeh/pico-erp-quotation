@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import kkojaeh.spring.boot.component.Give;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.val;
@@ -17,12 +18,11 @@ import pico.erp.quotation.QuotationRepository;
 import pico.erp.quotation.item.addition.QuotationItemAdditionRequests.CreateRequest;
 import pico.erp.quotation.item.addition.QuotationItemAdditionRequests.DeleteRequest;
 import pico.erp.quotation.item.addition.QuotationItemAdditionRequests.UpdateRequest;
-import pico.erp.shared.Public;
 import pico.erp.shared.event.EventPublisher;
 
 @SuppressWarnings("Duplicates")
 @Service
-@Public
+@Give
 @Transactional
 @Validated
 public class QuotationItemAdditionServiceLogic implements QuotationItemAdditionService {

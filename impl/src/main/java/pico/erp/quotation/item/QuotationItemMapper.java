@@ -1,6 +1,7 @@
 package pico.erp.quotation.item;
 
 import java.util.Optional;
+import kkojaeh.spring.boot.component.Take;
 import lombok.val;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,12 +23,10 @@ import pico.erp.quotation.item.QuotationItemRequests.FixUnitPriceRequest;
 @Mapper
 public abstract class QuotationItemMapper {
 
-  @Lazy
-  @Autowired
+  @Take
   private BomService bomService;
 
-  @Lazy
-  @Autowired
+  @Take
   private ItemService itemService;
 
   @Lazy
