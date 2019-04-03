@@ -3,12 +3,13 @@ package pico.erp.quotation;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import kkojaeh.spring.boot.component.SpringBootComponentReadyEvent;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 import pico.erp.quotation.addition.QuotationAdditionRequests;
 import pico.erp.quotation.addition.QuotationAdditionService;
@@ -16,36 +17,31 @@ import pico.erp.quotation.item.QuotationItemRequests;
 import pico.erp.quotation.item.QuotationItemService;
 import pico.erp.quotation.item.addition.QuotationItemAdditionRequests;
 import pico.erp.quotation.item.addition.QuotationItemAdditionService;
-import pico.erp.shared.ApplicationInitializer;
 
 //@Transactional
 @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Configuration
 @Profile({"test-data"})
-public class TestDataInitializer implements ApplicationInitializer {
+public class TestDataInitializer implements ApplicationListener<SpringBootComponentReadyEvent> {
 
-  @Lazy
   @Autowired
   private QuotationService quotationService;
 
-  @Lazy
   @Autowired
   private QuotationItemService quotationItemService;
 
-  @Lazy
   @Autowired
   private QuotationItemAdditionService quotationItemAdditionService;
 
-  @Lazy
   @Autowired
   private QuotationAdditionService quotationAdditionService;
 
   @Autowired
   private DataProperties dataProperties;
 
-  @Override
   @SneakyThrows
-  public void initialize() {
+  @Override
+  public void onApplicationEvent(SpringBootComponentReadyEvent event) {
     dataProperties.quotationDrafts.forEach(quotationService::draft);
     dataProperties.quotationItems.stream().forEach(quotationItemService::create);
     dataProperties.quotationItemAdditions.stream().forEach(quotationItemAdditionService::create);

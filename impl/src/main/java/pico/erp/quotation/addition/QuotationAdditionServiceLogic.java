@@ -3,9 +3,10 @@ package pico.erp.quotation.addition;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
+import kkojaeh.spring.boot.component.ComponentAutowired;
+import kkojaeh.spring.boot.component.ComponentBean;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -22,12 +23,11 @@ import pico.erp.quotation.addition.QuotationAdditionRequests.GenerateByProcessPr
 import pico.erp.quotation.addition.QuotationAdditionRequests.NextDraftRequest;
 import pico.erp.quotation.addition.QuotationAdditionRequests.UpdateRequest;
 import pico.erp.quotation.item.QuotationItemRepository;
-import pico.erp.shared.Public;
 import pico.erp.shared.event.EventPublisher;
 
 @SuppressWarnings("Duplicates")
 @Service
-@Public
+@ComponentBean
 @Transactional
 @Validated
 public class QuotationAdditionServiceLogic implements QuotationAdditionService {
@@ -47,16 +47,13 @@ public class QuotationAdditionServiceLogic implements QuotationAdditionService {
   @Autowired
   private QuotationAdditionRepository quotationAdditionRepository;
 
-  @Lazy
-  @Autowired
+  @ComponentAutowired
   private BomService bomService;
 
-  @Lazy
-  @Autowired
+  @ComponentAutowired
   private ProcessService processService;
 
-  @Lazy
-  @Autowired
+  @ComponentAutowired
   private ProcessPreparationService processPreparationService;
 
   @Override

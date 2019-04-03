@@ -4,12 +4,11 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import kkojaeh.spring.boot.component.ComponentAutowired;
 import lombok.val;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import pico.erp.bom.BomData;
 import pico.erp.bom.BomHierarchyData;
 import pico.erp.bom.BomService;
@@ -31,24 +30,19 @@ import pico.erp.quotation.item.addition.QuotationItemAddition;
 @Mapper(imports = BigDecimal.class)
 public abstract class QuotationPrintMapper {
 
-  @Lazy
-  @Autowired
+  @ComponentAutowired
   protected CompanyService companyService;
 
-  @Lazy
-  @Autowired
+  @ComponentAutowired
   private BomService bomService;
 
-  @Lazy
-  @Autowired
+  @ComponentAutowired
   private ItemService itemService;
 
-  @Lazy
-  @Autowired
+  @ComponentAutowired
   private ProcessService processService;
 
-  @Lazy
-  @Autowired
+  @ComponentAutowired
   private ItemSpecService itemSpecService;
 
   protected ItemData map(ItemId itemId) {

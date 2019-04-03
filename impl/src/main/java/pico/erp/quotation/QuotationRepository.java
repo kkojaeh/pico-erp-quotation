@@ -1,6 +1,6 @@
 package pico.erp.quotation;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.stream.Stream;
 import javax.validation.constraints.NotNull;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface QuotationRepository {
 
-  long countCreatedBetween(OffsetDateTime begin, OffsetDateTime end);
+  long countCreatedBetween(LocalDateTime begin, LocalDateTime end);
 
   Quotation create(@NotNull Quotation quotation);
 
@@ -19,7 +19,7 @@ public interface QuotationRepository {
 
   boolean exists(@NotNull QuotationCode code);
 
-  Stream<Quotation> findAllExpireCandidateBeforeThan(@NotNull OffsetDateTime fixedDate);
+  Stream<Quotation> findAllExpireCandidateBeforeThan(@NotNull LocalDateTime fixedDate);
 
   Optional<Quotation> findBy(@NotNull QuotationId id);
 

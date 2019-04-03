@@ -1,8 +1,8 @@
 package pico.erp.quotation.item;
 
+import kkojaeh.spring.boot.component.ComponentAutowired;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.context.event.EventListener;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
@@ -27,8 +27,7 @@ public class QuotationItemEventListener {
   @Autowired
   private QuotationServiceLogic quotationService;
 
-  @Lazy
-  @Autowired
+  @ComponentAutowired
   private BomService bomService;
 
 

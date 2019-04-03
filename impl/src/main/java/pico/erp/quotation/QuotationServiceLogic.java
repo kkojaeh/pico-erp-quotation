@@ -2,6 +2,7 @@ package pico.erp.quotation;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import kkojaeh.spring.boot.component.ComponentBean;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.val;
@@ -20,13 +21,12 @@ import pico.erp.quotation.QuotationRequests.PrepareRequest;
 import pico.erp.quotation.QuotationRequests.PrintSheetRequest;
 import pico.erp.quotation.QuotationRequests.UpdateRequest;
 import pico.erp.quotation.print.QuotationPrinter;
-import pico.erp.shared.Public;
 import pico.erp.shared.data.ContentInputStream;
 import pico.erp.shared.event.EventPublisher;
 
 @SuppressWarnings("Duplicates")
 @Service
-@Public
+@ComponentBean
 @Transactional
 @Validated
 public class QuotationServiceLogic implements QuotationService {

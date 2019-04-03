@@ -3,7 +3,7 @@ package pico.erp.quotation;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -100,7 +100,7 @@ public class QuotationEntity implements Serializable {
   UserId managerId;
 
   @Column
-  OffsetDateTime committedDate;
+  LocalDateTime committedDate;
 
   @Column(length = 20)
   @Enumerated(EnumType.STRING)
@@ -131,7 +131,7 @@ public class QuotationEntity implements Serializable {
   String publicDescription;
 
   @Column
-  OffsetDateTime expirationDate;
+  LocalDateTime expirationDate;
 
   @Embedded
   @AttributeOverrides({
@@ -143,7 +143,7 @@ public class QuotationEntity implements Serializable {
 
   @CreatedDate
   @Column(updatable = false)
-  OffsetDateTime createdDate;
+  LocalDateTime createdDate;
 
   @Embedded
   @AttributeOverrides({
@@ -154,7 +154,7 @@ public class QuotationEntity implements Serializable {
   Auditor lastModifiedBy;
 
   @LastModifiedDate
-  OffsetDateTime lastModifiedDate;
+  LocalDateTime lastModifiedDate;
 
   @Embedded
   @AttributeOverrides({

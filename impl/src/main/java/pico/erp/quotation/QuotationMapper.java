@@ -2,6 +2,7 @@ package pico.erp.quotation;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
+import kkojaeh.spring.boot.component.ComponentAutowired;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -34,16 +35,13 @@ public abstract class QuotationMapper {
   @Autowired
   protected AuditorAware<Auditor> auditorAware;
 
-  @Lazy
-  @Autowired
+  @ComponentAutowired
   private CompanyService companyService;
 
-  @Lazy
-  @Autowired
+  @ComponentAutowired
   private UserService userService;
 
-  @Lazy
-  @Autowired
+  @ComponentAutowired
   private ProjectService projectService;
 
   @Lazy
@@ -64,13 +62,13 @@ public abstract class QuotationMapper {
 
 
   @Mappings({
-    @Mapping(target = "canceler", expression = "java(auditorAware.getCurrentAuditor())")
+    @Mapping(target = "canceler", expression = "java(auditorAware.getCurrentAuditor().get())")
   })
   public abstract QuotationMessages.CancelRequest map(QuotationRequests.CancelRequest request);
 
 
   @Mappings({
-    @Mapping(target = "committer", expression = "java(auditorAware.getCurrentAuditor())")
+    @Mapping(target = "committer", expression = "java(auditorAware.getCurrentAuditor().get())")
   })
   public abstract QuotationMessages.CommitRequest map(QuotationRequests.CommitRequest request);
 

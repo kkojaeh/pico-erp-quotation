@@ -1,6 +1,6 @@
 package pico.erp.quotation.print;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,7 +36,7 @@ public class QuotationPrintData {
 
   String publicDescription;
 
-  OffsetDateTime committedDate;
+  LocalDateTime committedDate;
 
   List<QuotationPrintItemData> items;
 
