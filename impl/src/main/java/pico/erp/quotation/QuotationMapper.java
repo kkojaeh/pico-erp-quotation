@@ -2,7 +2,7 @@ package pico.erp.quotation;
 
 import java.util.Optional;
 import java.util.stream.Collectors;
-import kkojaeh.spring.boot.component.Take;
+import kkojaeh.spring.boot.component.ComponentAutowired;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -35,13 +35,13 @@ public abstract class QuotationMapper {
   @Autowired
   protected AuditorAware<Auditor> auditorAware;
 
-  @Take
+  @ComponentAutowired
   private CompanyService companyService;
 
-  @Take
+  @ComponentAutowired
   private UserService userService;
 
-  @Take
+  @ComponentAutowired
   private ProjectService projectService;
 
   @Lazy

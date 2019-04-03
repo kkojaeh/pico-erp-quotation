@@ -1,6 +1,6 @@
 package pico.erp.quotation.addition;
 
-import kkojaeh.spring.boot.component.Take;
+import kkojaeh.spring.boot.component.ComponentAutowired;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.jms.annotation.JmsListener;
@@ -17,7 +17,7 @@ public class QuotationAdditionEventListener {
 
   private static final String LISTENER_NAME = "listener.quotation-addition-event-listener";
 
-  @Take
+  @ComponentAutowired
   private BomService bomService;
 
   @Autowired

@@ -1,7 +1,7 @@
 package pico.erp.quotation;
 
 import java.util.HashMap;
-import kkojaeh.spring.boot.component.Give;
+import kkojaeh.spring.boot.component.ComponentBean;
 import kkojaeh.spring.boot.component.SpringBootComponent;
 import kkojaeh.spring.boot.component.SpringBootComponentBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.util.UriTemplate;
+import pico.erp.ComponentDefinition;
 import pico.erp.attachment.category.AttachmentCategory;
 import pico.erp.attachment.category.AttachmentCategory.AttachmentCategoryImpl;
 import pico.erp.attachment.category.AttachmentCategoryId;
@@ -36,7 +37,7 @@ import pico.erp.shared.data.Role;
 @Import(value = {
   SharedConfiguration.class
 })
-public class QuotationApplication {
+public class QuotationApplication implements ComponentDefinition {
 
   public static void main(String[] args) {
 
@@ -45,14 +46,14 @@ public class QuotationApplication {
       .run(args);
   }
 
-  @Give
   @Bean
+  @ComponentBean(host = false)
   public AttachmentCategory attachmentCategory() {
     return new AttachmentCategoryImpl(AttachmentCategoryId.from("quotation"), "견적");
   }
 
   @Bean
-  @Give
+  @ComponentBean(host = false)
   public CommentSubjectType commentSubjectType(
     final @Value("${quotation.comment.uri}") String template) {
     return new CommentSubjectTypeImpl(
@@ -65,14 +66,19 @@ public class QuotationApplication {
       }));
   }
 
+  @Override
+  public Class<?> getComponentClass() {
+    return QuotationApplication.class;
+  }
+
   @Bean
-  @Give
+  @ComponentBean(host = false)
   public Role quotationAccessorRole() {
     return Roles.QUOTATION_ACCESSOR;
   }
 
   @Bean
-  @Give
+  @ComponentBean(host = false)
   public Role quotationManagerRole() {
     return Roles.QUOTATION_MANAGER;
   }

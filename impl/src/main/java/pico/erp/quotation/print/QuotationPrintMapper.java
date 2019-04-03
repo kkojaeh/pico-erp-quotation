@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import kkojaeh.spring.boot.component.Take;
+import kkojaeh.spring.boot.component.ComponentAutowired;
 import lombok.val;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -30,19 +30,19 @@ import pico.erp.quotation.item.addition.QuotationItemAddition;
 @Mapper(imports = BigDecimal.class)
 public abstract class QuotationPrintMapper {
 
-  @Take
+  @ComponentAutowired
   protected CompanyService companyService;
 
-  @Take
+  @ComponentAutowired
   private BomService bomService;
 
-  @Take
+  @ComponentAutowired
   private ItemService itemService;
 
-  @Take
+  @ComponentAutowired
   private ProcessService processService;
 
-  @Take
+  @ComponentAutowired
   private ItemSpecService itemSpecService;
 
   protected ItemData map(ItemId itemId) {
