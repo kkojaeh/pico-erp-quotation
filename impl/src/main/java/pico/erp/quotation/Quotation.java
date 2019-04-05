@@ -1,7 +1,7 @@
 package pico.erp.quotation;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -71,11 +71,11 @@ public class Quotation {
 
   Auditor committer;
 
-  LocalDateTime committedDate;
+  OffsetDateTime committedDate;
 
   Auditor canceler;
 
-  LocalDateTime canceledDate;
+  OffsetDateTime canceledDate;
 
   QuotationStatusKind status;
 
@@ -85,7 +85,7 @@ public class Quotation {
 
   AttachmentId attachmentId;
 
-  LocalDateTime expirationDate;
+  OffsetDateTime expirationDate;
 
   boolean committable;
 
@@ -132,7 +132,7 @@ public class Quotation {
     }
     this.status = QuotationStatusKind.CANCELED;
     this.canceler = request.getCanceler();
-    this.canceledDate = LocalDateTime.now();
+    this.canceledDate = OffsetDateTime.now();
     return new CancelResponse(
       Arrays.asList(new QuotationEvents.CanceledEvent(this.id)));
   }
@@ -143,7 +143,7 @@ public class Quotation {
     }
     this.status = QuotationStatusKind.COMMITTED;
     this.committer = request.getCommitter();
-    this.committedDate = LocalDateTime.now();
+    this.committedDate = OffsetDateTime.now();
     this.expirationDate = expiryPolicy.resolveExpirationDate(this.committedDate);
     this.committable = false;
     this.preparable = false;

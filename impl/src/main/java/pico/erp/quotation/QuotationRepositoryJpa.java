@@ -1,6 +1,6 @@
 package pico.erp.quotation;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.EnumSet;
 import java.util.Optional;
 import java.util.Set;
@@ -17,12 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 interface QuotationEntityRepository extends CrudRepository<QuotationEntity, QuotationId> {
 
   @Query("SELECT COUNT(q) FROM Quotation q WHERE q.createdDate >= :begin AND q.createdDate <= :end")
-  long countCreatedBetween(@Param("begin") LocalDateTime begin,
-    @Param("end") LocalDateTime end);
+  long countCreatedBetween(@Param("begin") OffsetDateTime begin,
+    @Param("end") OffsetDateTime end);
 
   @Query("SELECT q FROM Quotation q WHERE q.expirationDate < :fixedDate AND q.status in (:statuses)")
   Stream<QuotationEntity> findAllExpireCandidateBeforeThan(
-    @Param("fixedDate") LocalDateTime fixedDate,
+    @Param("fixedDate") OffsetDateTime fixedDate,
     @Param("statuses") Set<QuotationStatusKind> statuses);
 
   @Query("SELECT CASE WHEN COUNT(q) > 0 THEN true ELSE false END FROM Quotation q WHERE q.code = :code")
@@ -41,7 +41,7 @@ public class QuotationRepositoryJpa implements QuotationRepository {
   private QuotationMapper mapper;
 
   @Override
-  public long countCreatedBetween(LocalDateTime begin, LocalDateTime end) {
+  public long countCreatedBetween(OffsetDateTime begin, OffsetDateTime end) {
     return repository.countCreatedBetween(begin, end);
   }
 
@@ -74,7 +74,7 @@ public class QuotationRepositoryJpa implements QuotationRepository {
   }
 
   @Override
-  public Stream<Quotation> findAllExpireCandidateBeforeThan(LocalDateTime fixedDate) {
+  public Stream<Quotation> findAllExpireCandidateBeforeThan(OffsetDateTime fixedDate) {
     return repository.findAllExpireCandidateBeforeThan(fixedDate,
       EnumSet.of(QuotationStatusKind.COMMITTED, QuotationStatusKind.IN_PROCEED))
       .map(mapper::jpa);

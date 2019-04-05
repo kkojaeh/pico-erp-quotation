@@ -14,7 +14,7 @@ import pico.erp.shared.TestParentApplication
 import pico.erp.user.UserId
 import spock.lang.Specification
 
-import java.time.LocalDateTime
+import java.time.OffsetDateTime
 
 @SpringBootTest(classes = [QuotationApplication, TestConfig])
 @SpringBootTestComponent(parent = TestParentApplication, siblingsSupplier = ComponentDefinitionServiceLoaderTestComponentSiblingsSupplier.class)
@@ -57,7 +57,7 @@ class QuotationServiceSpec extends Specification {
 
     quotationService.prepare(new QuotationRequests.PrepareRequest(id: id))
     quotationService.commit(new QuotationRequests.CommitRequest(id: id))
-    quotationService.expire(new QuotationRequests.ExpireRequest(LocalDateTime.now().plusMonths(6)))
+    quotationService.expire(new QuotationRequests.ExpireRequest(OffsetDateTime.now().plusMonths(6)))
     def q = quotationService.get(id)
 
     then:

@@ -1,6 +1,6 @@
 package pico.erp.quotation;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,17 +31,17 @@ public class QuotationView {
 
   UserId managerId;
 
-  LocalDateTime committedDate;
+  OffsetDateTime committedDate;
 
   QuotationStatusKind status;
 
   Auditor createdBy;
 
-  LocalDateTime createdDate;
+  OffsetDateTime createdDate;
 
   Auditor lastModifiedBy;
 
-  LocalDateTime lastModifiedDate;
+  OffsetDateTime lastModifiedDate;
 
   @Data
   @NoArgsConstructor
@@ -61,9 +61,9 @@ public class QuotationView {
 
     Set<QuotationStatusKind> statuses;
 
-    LocalDateTime startCreatedDate;
+    OffsetDateTime startCreatedDate;
 
-    LocalDateTime endCreatedDate;
+    OffsetDateTime endCreatedDate;
 
   }
 

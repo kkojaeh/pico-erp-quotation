@@ -1,7 +1,7 @@
 package pico.erp.quotation;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +39,9 @@ public class QuotationAggregator extends Quotation {
     QuotationId previousId, CommentSubjectId commentSubjectId, int revision,
     ProjectData project, CompanyData customer, String name,
     QuotationExpiryPolicyKind expiryPolicy, UserData manager,
-    Auditor committer, LocalDateTime committedDate, Auditor canceler,
-    LocalDateTime canceledDate, QuotationStatusKind status, String protectedDescription,
-    String publicDescription, AttachmentId attachmentId, LocalDateTime expirationDate,
+    Auditor committer, OffsetDateTime committedDate, Auditor canceler,
+    OffsetDateTime canceledDate, QuotationStatusKind status, String protectedDescription,
+    String publicDescription, AttachmentId attachmentId, OffsetDateTime expirationDate,
     boolean committable, boolean preparable, BigDecimal totalAdditionAmount,
     BigDecimal totalAmount, BigDecimal totalItemAmount,
     BigDecimal totalItemDiscountedAmount, BigDecimal totalItemDiscountedRate,
